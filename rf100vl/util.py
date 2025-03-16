@@ -12,8 +12,6 @@ def get_basename_json():
     with open(DATASET_TO_BASENAME_JSON_PATH, "r") as f:
         dataset_to_basename = json.load(f)
     
-    print(len(set(dataset_to_basename.values())))
-    [print(x) for x in sorted(set(dataset_to_basename.values()))]
     assert len(set(dataset_to_basename.values())) == 100
     return dataset_to_basename
 
