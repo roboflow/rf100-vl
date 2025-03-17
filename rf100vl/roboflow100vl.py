@@ -1,9 +1,8 @@
 import os
-from typing import List
+from typing import List, Optional, Iterator
 from rf100vl.dataset import RF100VlDataset
 from roboflow import Project
 import roboflow
-
 
 def get_rf(api_key: Optional[str] = None):
     if api_key is not None:
