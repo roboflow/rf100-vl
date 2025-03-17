@@ -13,6 +13,10 @@ setup(
     packages=find_packages(),
     python_requires=">=3.6",
     install_requires=requirements,
+    include_package_data=True,
+    package_data={
+        "rf100vl": ["assets/*.json"],
+    },
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
