@@ -23,20 +23,19 @@ class DatasetList:
         self.projects = sorted(self.projects, key=lambda p: p.name)
         self.datasets = [RF100VlDataset(p) for p in projects]
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[RF100VlDataset]:
         return iter(self.datasets)
 
-    def download(self, path: str, model_format: str = "coco", overwrite: bool = True):
+    def download(self, path: str, model_format: str = "coco", overwrite: bool = True) -> None:
         os.makedirs(path, exist_ok=True)
         for dataset in self.datasets:
             dataset.download(os.path.join(path, dataset.name), model_format, overwrite)
     
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.datasets)
     
-    def __getitem__(self, index):
+    def __getitem__(self, index: int) -> RF100VlDataset:
         return self.datasets[index]
-
 
 def get_rf100vl_projects(api_key: Optional[str] = None):
     rf = get_rf(api_key)
@@ -59,7 +58,7 @@ def get_rf100vl_fsod_projects(api_key: Optional[str] = None):
     return DatasetList(projects)
 
 
-def get_rf20vl_fsod_projects(api_key: Optional[str] = None):
+def get_rf20vl_fsod_projects(api_key: Optional[str] = None) -> DatasetList:
     rf = get_rf(api_key)
     workspace = rf.workspace("roboflow20vl-fsod")
     projects = []
@@ -69,7 +68,7 @@ def get_rf20vl_fsod_projects(api_key: Optional[str] = None):
     return DatasetList(projects)
 
 
-def get_rf20vl_full_projects(api_key: Optional[str] = None):
+def get_rf20vl_full_projects(api_key: Optional[str] = None) -> DatasetList:
     rf = get_rf(api_key)
     workspace = rf.workspace("roboflow20vl-full")
     projects = []
@@ -79,7 +78,7 @@ def get_rf20vl_full_projects(api_key: Optional[str] = None):
     return DatasetList(projects)
 
 
-def download_rf100vl(path: str, model_format: str = "coco", overwrite: bool = True, api_key: Optional[str] = None):
+def download_rf100vl(path: str, model_format: str = "coco", overwrite: bool = True, api_key: Optional[str] = None) -> DatasetList:
     rf100vl_projects = get_rf100vl_projects(api_key)
     rf100vl_projects.download(path, model_format, overwrite)
     return rf100vl_projects
@@ -87,19 +86,19 @@ def download_rf100vl(path: str, model_format: str = "coco", overwrite: bool = Tr
 
 def download_rf100vl_fsod(
     path: str, model_format: str = "coco", overwrite: bool = True, api_key: Optional[str] = None
-):
+) -> DatasetList:
     rf100vl_fsod_projects = get_rf100vl_fsod_projects(api_key)
     rf100vl_fsod_projects.download(path, model_format, overwrite)
     return rf100vl_fsod_projects
 
 
-def download_rf20vl_fsod(path: str, model_format: str = "coco", overwrite: bool = True, api_key: Optional[str] = None):
+def download_rf20vl_fsod(path: str, model_format: str = "coco", overwrite: bool = True, api_key: Optional[str] = None) -> DatasetList:
     rf20vl_fsod_projects = get_rf20vl_fsod_projects(api_key)
     rf20vl_fsod_projects.download(path, model_format, overwrite)
     return rf20vl_fsod_projects
 
 
-def download_rf20vl_full(path: str, model_format: str = "coco", overwrite: bool = True, api_key: Optional[str] = None):
+def download_rf20vl_full(path: str, model_format: str = "coco", overwrite: bool = True, api_key: Optional[str] = None) -> DatasetList:
     rf20vl_full_projects = get_rf20vl_full_projects(api_key)
     rf20vl_full_projects.download(path, model_format, overwrite)
     return rf20vl_full_projects
