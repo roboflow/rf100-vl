@@ -4,12 +4,17 @@ from rf100vl.dataset import RF100VlDataset
 from roboflow import Project
 import roboflow
 
-ROBOFLOW_API_KEY = os.getenv("ROBOFLOW_API_KEY")
-if ROBOFLOW_API_KEY is not None:
-    rf = roboflow.Roboflow(api_key=ROBOFLOW_API_KEY)
-else:
-    roboflow.login()
-    rf = roboflow.Roboflow()
+
+def get_rf(api_key: Optional[str] = None):
+    if api_key is not None:
+        return roboflow.Roboflow(api_key=api_key)
+    else:
+        ROBOFLOW_API_KEY = os.getenv("ROBOFLOW_API_KEY")
+        if ROBOFLOW_API_KEY is not None:
+            return roboflow.Roboflow(api_key=ROBOFLOW_API_KEY)
+        else:
+            roboflow.login()
+            return roboflow.Roboflow()
 
 
 class DatasetList:
@@ -33,7 +38,8 @@ class DatasetList:
         return self.datasets[index]
 
 
-def get_rf100vl_projects():
+def get_rf100vl_projects(api_key: Optional[str] = None):
+    rf = get_rf(api_key)
     workspace = rf.workspace("rf-100-vl")
     projects = []
     for project in workspace.project_list:
@@ -43,7 +49,8 @@ def get_rf100vl_projects():
     return DatasetList(projects)
 
 
-def get_rf100vl_fsod_projects():
+def get_rf100vl_fsod_projects(api_key: Optional[str] = None):
+    rf = get_rf(api_key)
     workspace = rf.workspace("rf-100-vl-fsod")
     projects = []
     for project in workspace.project_list:
@@ -52,7 +59,8 @@ def get_rf100vl_fsod_projects():
     return DatasetList(projects)
 
 
-def get_rf20vl_fsod_projects():
+def get_rf20vl_fsod_projects(api_key: Optional[str] = None):
+    rf = get_rf(api_key)
     workspace = rf.workspace("roboflow20vl-fsod")
     projects = []
     for project in workspace.project_list:
@@ -61,7 +69,8 @@ def get_rf20vl_fsod_projects():
     return DatasetList(projects)
 
 
-def get_rf20vl_full_projects():
+def get_rf20vl_full_projects(api_key: Optional[str] = None):
+    rf = get_rf(api_key)
     workspace = rf.workspace("roboflow20vl-full")
     projects = []
     for project in workspace.project_list:
@@ -70,27 +79,27 @@ def get_rf20vl_full_projects():
     return DatasetList(projects)
 
 
-def download_rf100vl(path: str, model_format: str = "coco", overwrite: bool = True):
-    rf100vl_projects = get_rf100vl_projects()
+def download_rf100vl(path: str, model_format: str = "coco", overwrite: bool = True, api_key: Optional[str] = None):
+    rf100vl_projects = get_rf100vl_projects(api_key)
     rf100vl_projects.download(path, model_format, overwrite)
     return rf100vl_projects
 
 
 def download_rf100vl_fsod(
-    path: str, model_format: str = "coco", overwrite: bool = True
+    path: str, model_format: str = "coco", overwrite: bool = True, api_key: Optional[str] = None
 ):
-    rf100vl_fsod_projects = get_rf100vl_fsod_projects()
+    rf100vl_fsod_projects = get_rf100vl_fsod_projects(api_key)
     rf100vl_fsod_projects.download(path, model_format, overwrite)
     return rf100vl_fsod_projects
 
 
-def download_rf20vl_fsod(path: str, model_format: str = "coco", overwrite: bool = True):
-    rf20vl_fsod_projects = get_rf20vl_fsod_projects()
+def download_rf20vl_fsod(path: str, model_format: str = "coco", overwrite: bool = True, api_key: Optional[str] = None):
+    rf20vl_fsod_projects = get_rf20vl_fsod_projects(api_key)
     rf20vl_fsod_projects.download(path, model_format, overwrite)
     return rf20vl_fsod_projects
 
 
-def download_rf20vl_full(path: str, model_format: str = "coco", overwrite: bool = True):
-    rf20vl_full_projects = get_rf20vl_full_projects()
+def download_rf20vl_full(path: str, model_format: str = "coco", overwrite: bool = True, api_key: Optional[str] = None):
+    rf20vl_full_projects = get_rf20vl_full_projects(api_key)
     rf20vl_full_projects.download(path, model_format, overwrite)
     return rf20vl_full_projects
