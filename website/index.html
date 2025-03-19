@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roboflow100-VL: A Multi-Domain Object Detection Benchmark for Vision-Language Models</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+
+    <meta name="title" content="Roboflow100-VL: A Multi-Domain Object Detection Benchmark for Vision-Language Models" />
+    <meta name="description" content="Roboflow100-VL (RF100-VL) is a multi-domain object detection benchmark developed by researchers from Roboflow and Carnegie Mellon University." />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://rf100vl.org" />
+    <meta property="og:title" content="Roboflow100-VL: A Multi-Domain Object Detection Benchmark for Vision-Language Models" />
+    <meta property="og:description" content="Roboflow100-VL (RF100-VL) is a multi-domain object detection benchmark developed by researchers from Roboflow and Carnegie Mellon University." />
+    <meta property="og:image" content="https://metatags.io/images/meta-tags.png" />
+
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://rf100vl.org" />
+    <meta property="twitter:title" content="Roboflow100-VL: A Multi-Domain Object Detection Benchmark for Vision-Language Models" />
+    <meta property="twitter:description" content="Roboflow100-VL (RF100-VL) is a multi-domain object detection benchmark developed by researchers from Roboflow and Carnegie Mellon University." />
+    <meta property="twitter:image" content="https://metatags.io/images/meta-tags.png" />
+
+    <style>
+        * {
+            font-family: "Open Sans", serif;
+            line-height: 1.5;
+        }
+        body {
+            padding: 1rem;
+        }
+        main {
+            max-width: 60rem;
+            margin: auto;
+        }
+        header {
+            text-align: center;
+        }
+        .authors, .orgs {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .authors li, .orgs li {
+            display: inline;
+            margin-right: 1rem;
+        }
+        .authors li:first-child, .orgs li:first-child {
+            margin-left: 0;
+        }
+        .authors li:last-child, .orgs li:last-child {
+            margin-right: 0;
+        }
+        .orgs {
+            margin-top: 1rem;
+        }
+        .authors li a, .orgs li a {
+            color: hsla(210, 67%, 58%, 0.862);
+        }
+        .buttons {
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+        .buttons li {
+            display: inline;
+            margin-right: 1rem;
+            background-color: #2f2f2f;
+            color: white;
+            padding: 1rem;
+            border-radius: 2rem;
+            align-items: center;
+            justify-content: center;
+            align-content: center;
+        }
+        .buttons li .icon {
+            align-items: center;
+            justify-content: center;
+            align-content: center;
+            display: inline-flex;
+        }
+        .buttons li a {
+            color: white;
+            text-decoration: none;
+        }
+        .buttons li svg {
+            max-height: 1.5rem;
+        }
+        section h2 {
+            margin-top: 2rem;
+            text-align: center;
+        }
+        section p {
+            max-width: 35rem;
+            margin: auto;
+            text-align: justify;
+        }
+        .header-img {
+            max-width: 100%;
+            max-height: 25rem;
+            border: 1px solid #2f2f2f;
+        }
+        .intro-paragraph {
+            text-align: justify;
+        }
+        figcaption {
+            font-style: italic;
+        }
+        .buttons img {
+            max-height: 1rem;
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-wrap: wrap;
+            white-space: pre-wrap;
+        }
+        h1 {
+            color: rgb(54, 54, 54);
+            margin-bottom: 0;
+            font-weight: 500;
+            font-size: 2.5rem;
+        }
+        .subheading {
+            color: rgba(171, 20, 20, 0.874);
+            font-size: 2rem;
+            margin-top: 0;
+        }
+        .first-authors {
+            margin: 0;
+        }
+        header p, header li {
+            font-size: 1.25rem;
+            color: rgb(74, 74, 74);
+        }
+        a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <header>
+            <h1>Roboflow100-VL: A Multi-Domain Object Detection Benchmark for Vision-Language Models</h1>
+            <p class="subheading">CVPR 2025 Workshop</p>
+            <ul class="authors">
+                <li>
+                    Peter Robicheaux <sup>1†</sup>
+                </li>
+                <li>
+                    Matvei Popov<sup>1</sup>
+                </li>
+                <li>
+                    Anish Madan <sup>2</sup>
+                </li>
+                <li>
+                    Isaac Robinson <sup>1</sup>
+                </li>
+                <li>
+                    Joseph Nelson <sup>1</sup>
+                </li>
+                <li>
+                    Deva Ramanan <sup>2</sup>
+                </li>
+                <li>
+                    Neehar Peri <sup>2</sup>
+                </li>
+            </ul>
+            <ul class="orgs">
+                <li>
+                    <a target="_blank" href="https://roboflow.com">Roboflow</a>
+                </li>
+                <li>
+                    <a target="_blank" href="https://www.cmu.edu/">Carnegie Mellon University</a>
+                </li>
+            </ul>
+            <p class="first-authors">† First authors</p>
+            <ul class="buttons">
+                <a target="_blank" href="https://www.arxiv.org/pdf/2502.13130" class="external-link button is-normal is-rounded is-dark">
+                    <li>
+                        <img src="./assets/arxiv-logomark-small.svg">
+                        Paper
+                    </li>
+                  </a>
+                </li>
+                <a href="https://github.com/roboflow/rf100vl/" class="external-link button is-normal is-rounded is-dark">
+                    <li>
+                        <img src="./assets/github-logo.svg">
+                        Code
+                    </li>
+                </a>
+                <a href="https://universe.roboflow.com/rf-100-vl/" class="external-link button is-normal is-rounded is-dark">
+                    <li>
+                        <img src="./assets/uni-logo.svg">
+                        Roboflow Universe Datasets
+                    </li>
+                </a>
+            </ul>
+            <figure>
+                <img src="./assets/results.png" class="header-img" />
+                <figcaption><b>Figure 1.</b> We identify a set of 100 challenging datasets from Roboflow
+                    Universe that contain concepts not typically found in internet-scale pre-training.</figcaption>
+            </figure>
+            <p class="intro-paragraph"><b>Roboflow 100</b> Vision Language (RF100-VL) is the first benchmark to ask, “How well does your VLM do in understanding the real world?” Roboflow100 Vision Language introduces 100 open source datasets containing object detection bounding boxes and multimodal few shot instruction image-text pairs across novel image domains like aerial data, biological data, and industrial data. In total, XXXX images, YYY annotations, and ZZZ labeling hours. RF100-VL is a curated sample from Roboflow Universe, where 500,000+ datasets demonstrate how computer vision is being leveraged in production problems today. Notably, current state-of-the-art models trained on webscale data like QwenVL2.5 and GroundingDINO achieve as low as 1% AP in some categories represented in RF100-VL. Roboflow100 Vision Language is like COCO for VLMs that need to be grounded in the real world. </p>
+        </header>
+        <section>
+            <h2>Abstract</h2>
+            <p>Vision-language models (VLMs) trained on internet-scale data achieve remarkable zero-shot detection performance on common objects like car, truck, and pedestrian. However, state-of-the-art models still struggle to generalize to out- of-distribution tasks (e.g. material property estimation, defect detection, and contextual action recognition) and imaging modalities (e.g. X-rays, thermal-spectrum data, and aerial images) not typically found in their pre-training. Rather than simply re-training VLMs on more data, we argue that out-of-domain generalization can be principally addressed through the lens of few-shot learning by aligning VLMs to new concepts with annotation instructions containing a few visual examples and rich textual descriptions. To this end, we introduce Roboflow-VL, a large-scale collection of 100 multi-modal datasets with diverse concepts not commonly found in VLM pre-training. Notably, state-of-the-art models like GroundingDINO and Qwen2.5-VL achieve less than 1% AP on many domains in Roboflow-VL. Our code and dataset are available on GitHub and Roboflow.</p>
+        </section>
+        <section>
+            <h2>Contributions</h2>
+            <p>RF100VL introduces a novel evaluation for assessing the efficacy of vision language models (VLMs) and traditional object detectors in real world settings. As models become increasingly capable, they need to be compared to real world, difficult, and practical scenarios. The Roboflow open source community is increasingly representative of how computer vision is truly being used in real world settings, spanning over 500M user labeled and shared images. RF100VL is the culmination of aggregating the best high quality open source examples (including those cited in Nature) from a wide array of domains, then relabeling and verifying annotation quality. It supports few shot object detection from image prompts, annotator instructions, and human readable class names. RF100VL builds on RF100, a benchmark Roboflow introduced at CVPR 2023 that labs from companies like Apple, Baidu, and Microsoft leverage to benchmark vision model capabilities.</p>
+        </section>
+        <section>
+            <h2>Citation</h2>
+            <p>You can cite RF100-VL in your research using the following citation:</p>
+            <pre>
+@misc{Robicheaux_Roboflow_100_VL,
+    author = {Robicheaux, Peter and Popov, Matvei and Madan, Anish and Robinson, Isaac and Ramanan, Deva and Peri, Neehar},
+    title = {{Roboflow 100 VL}},
+    url = {https://github.com/roboflow/rf100vl/}
+}
+            </pre>
+        </section>
+        <footer>
+            <p>Website style based on <a href="https://github.com/nerfies/nerfies.github.io">NeRFies</a>.</p>
+        </footer>
+    </main>
+</body>
+</html>

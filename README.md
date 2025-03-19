@@ -28,24 +28,24 @@ Several helper functions are available to download RF100-VL and its subsets. The
 
 | Data Loader Name               | Dataset Name           |
 |--------------------------------|------------------------|
-| get_rf100vl_fsod_projects      | RF100VL-FSOD          |
-| get_rf100vl_projects           | RF100VL               |
-| get_rf20vl_fsod_projects       | RF20VL-FSOD           |
-| get_rf20vl_full_projects       | RF20VL           |
-| download_rf100vl_fsod          | RF100VL-FSOD          |
-| download_rf100vl               | RF100VL               |
-| download_rf20vl_fsod           | RF20VL-FSOD           |
-| download_rf20vl_full           | RF20VL           |
+| `get_rf100vl_fsod_projects`      | RF100VL-FSOD          |
+| `get_rf100vl_projects`           | RF100VL               |
+| `get_rf20vl_fsod_projects`       | RF20VL-FSOD           |
+| `get_rf20vl_full_projects`       | RF20VL           |
+| `download_rf100vl_fsod`          | RF100VL-FSOD          |
+| `download_rf100vl`               | RF100VL               |
+| `download_rf20vl_fsod`           | RF20VL-FSOD           |
+| `download_rf20vl_full`           | RF20VL           |
 
 Here is an example showing how to download the full dataset:
 
 ```python
 from rf100vl import download_rf100vl
 
-download_rf100vl()
+download_rf100vl(path="./rf100vl/")
 ```
 
-The results will be downloaded in COCO JSON format to a directory called `datasets`.
+The datasets will be downloaded in COCO JSON format to a directory called `rf100vl`. Every dataset will be in its own sub-folder.
 
 ## Acknowledgements
 
