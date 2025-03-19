@@ -2,57 +2,17 @@
 <h2>Roboflow100-VL: A Multi-Domain Object Detection
 Benchmark for Vision-Language Models</h2>
 
-<ul class="authors">
-    <li>
-        Peter Robicheaux <sup>1†</sup>
-    </li>
-    <li>
-        Matvei Popov<sup>1</sup>
-    </li>
-    <li>
-        Anish Madan <sup>2</sup>
-    </li>
-    <li>
-        Isaac Robinson <sup>1</sup>
-    </li>
-    <li>
-        Joseph Nelson <sup>1</sup>
-    </li>
-    <li>
-        Deva Ramanan <sup>2</sup>
-    </li>
-    <li>
-        Neehar Peri <sup>2</sup>
-    </li>
-</ul>
-<ul class="orgs">
-    <li>
-        <a target="_blank" href="https://roboflow.com">Roboflow</a>
-    </li>
-    <li>
-        <a target="_blank" href="https://www.cmu.edu/">Carnegie Mellon University</a>
-    </li>
-</ul>
-<style>
+Peter Robicheaux <sup>1†</sup>
+Matvei Popov<sup>1</sup>
+Anish Madan <sup>2</sup>
+Isaac Robinson <sup>1</sup>
+Joseph Nelson <sup>1</sup>
+Deva Ramanan <sup>2</sup>
+Neehar Peri <sup>2</sup>
 
-.authors, .orgs {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-.orgs li {
-    margin-right: 1rem;
-}
-.authors li, .orgs li {
-    display: inline;
-}
-.first-authors {
-    margin-top: 0;
-}
-</style>
+<a target="_blank" href="https://roboflow.com">Roboflow</a>&nbsp;&nbsp;&nbsp;
+<a target="_blank" href="https://www.cmu.edu/">Carnegie Mellon University</a>
+
 <p class="first-authors">† First authors</p>
 </div>
 
