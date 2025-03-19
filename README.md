@@ -21,7 +21,9 @@ Neehar Peri <sup>2</sup>
 Introduced in the paper "Roboflow100-VL: A Multi-Domain Object Detection
 Benchmark for Vision-Language Models", RF100-VL is a large-scale collection of 100 multi-modal datasets with diverse concepts not commonly found in VLM pre-training.
 
-The benchmark includes images from seven domains: flora and fauna, sport, industry, document processing, laboratory imaging, aerial imagery, and miscellaneous datasets related to various use cases for which detection models are commonly used.
+The benchmark includes images, with corresponding annotations, from seven domains: flora and fauna, sport, industry, document processing, laboratory imaging, aerial imagery, and miscellaneous datasets related to various use cases for which detection models are commonly used.
+
+You can use RF100-VL to benchmark fully supervised, semi-supervised and few-shot object detection models, and Vision Language Models (VLMs) with localization capabilities.
 
 ![](https://media.roboflow.com/rf100vl/results.png)
 
@@ -69,7 +71,7 @@ The datasets will be downloaded in COCO JSON format to a directory called `rf100
 
 ## Acknowledgements
 
-
+This work was supported in part by compute provided by NVIDIA, and the NSF GRFP (Grant No. DGE2140739).
 
 ## License
 
