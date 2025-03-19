@@ -24,7 +24,7 @@ Export your API key into an environment variable called `ROBOFLOW_API_KEY`:
 export ROBOFLOW_API_KEY=YOUR_KEY
 ```
 
-Several helper functions are available to download RF100-VL and its subsets. These are split up into two categories: functions that retrieve the names of projects (that start with `get_`), and data downloaders (that start with `download_`).
+Several helper functions are available to download RF100-VL and its subsets. These are split up into two categories: functions that retrieve Dataset objects with the name of each project and its category. (that start with `get_`), and data downloaders (that start with `download_`).
 
 | Data Loader Name               | Dataset Name           |
 |--------------------------------|------------------------|
@@ -36,6 +36,8 @@ Several helper functions are available to download RF100-VL and its subsets. The
 | download_rf100vl               | RF100VL               |
 | download_rf20vl_fsod           | RF20VL-FSOD           |
 | download_rf20vl_full           | RF20VL           |
+
+Each dataset object has its own `download` method.
 
 Here is an example showing how to download the full dataset:
 
