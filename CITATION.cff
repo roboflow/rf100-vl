@@ -1,0 +1,78 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: Roboflow 100 VL
+message: >-
+  If you use this dataset, please cite it using the metadata
+  from this file.
+type: dataset
+authors:
+  - given-names: Peter
+    family-names: Robicheaux
+    email: peter@roboflow.com
+    affiliation: Roboflow
+  - given-names: Matvei
+    family-names: Popov
+    email: matvei@roboflow.com
+    affiliation: Roboflow
+  - given-names: Anish
+    family-names: Madan
+    affiliation: Carnegie Mellon University
+  - given-names: Isaac
+    family-names: Robinson
+    email: isaac@roboflow.com
+    affiliation: Roboflow
+  - given-names: Deva
+    family-names: Ramanan
+    affiliation: Carnegie Mellon University
+  - given-names: Neehar
+    family-names: Peri
+    affiliation: Carnegie Mellon University
+repository-code: 'https://github.com/roboflow/rf100vl/'
+url: 'http://rf100vl.org/'
+abstract: >-
+  Vision-language models (VLMs) trained on internet-scale
+  data achieve remark-
+
+  able zero-shot detection performance on common objects
+  like car, truck, and
+
+  pedestrian. However, state-of-the-art models still
+  struggle to generalize to out-
+
+  of-distribution tasks (e.g. material property estimation,
+  defect detection, and con-
+
+  textual action recognition) and imaging modalities (e.g.
+  X-rays, thermal-spectrum
+
+  data, and aerial images) not typically found in their
+  pre-training. Rather than
+
+  simply re-training VLMs on more visual data (the dominant
+  paradigm for few-shot
+
+  learning), we argue that one should align VLMs to new
+  concepts with annotation
+
+  instructions containing a few visual examples and rich
+  textual descriptions. To this
+
+  end, we introduce Roboflow100-VL, a large-scale collection
+  of 100 multi-modal
+
+  datasets with diverse concepts not commonly found in VLM
+  pre-training. Notably,
+
+  state-of-the-art models like GroundingDINO and Qwen2.5-VL
+  achieve less than
+
+  1% AP zero-shot accuracy, demonstrating the need for
+  few-shot concept alignment.
+
+  Our code and dataset are available on GitHub and Roboflow.
+keywords:
+  - few shot object detection
+  - VLM
+license: Apache-2.0
