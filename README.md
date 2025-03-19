@@ -3,7 +3,7 @@
 Benchmark for Vision-Language Models</h2>
 
 Peter Robicheaux <sup>1†</sup>
-Matvei Popov<sup>1</sup>
+Matvei Popov<sup>1†</sup>
 Anish Madan <sup>2</sup>
 
 Isaac Robinson <sup>1</sup>
