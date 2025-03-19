@@ -1,4 +1,61 @@
-# Roboflow100-VL (RF100-VL)
+<div align="center">
+<h2>Roboflow100-VL: A Multi-Domain Object Detection
+Benchmark for Vision-Language Models</h2>
+
+<ul class="authors">
+    <li>
+        Peter Robicheaux <sup>1†</sup>
+    </li>
+    <li>
+        Matvei Popov<sup>1</sup>
+    </li>
+    <li>
+        Anish Madan <sup>2</sup>
+    </li>
+    <li>
+        Isaac Robinson <sup>1</sup>
+    </li>
+    <li>
+        Joseph Nelson <sup>1</sup>
+    </li>
+    <li>
+        Deva Ramanan <sup>2</sup>
+    </li>
+    <li>
+        Neehar Peri <sup>2</sup>
+    </li>
+</ul>
+<ul class="orgs">
+    <li>
+        <a target="_blank" href="https://roboflow.com">Roboflow</a>
+    </li>
+    <li>
+        <a target="_blank" href="https://www.cmu.edu/">Carnegie Mellon University</a>
+    </li>
+</ul>
+<style>
+
+.authors, .orgs {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.orgs li {
+    margin-right: 1rem;
+}
+.authors li, .orgs li {
+    display: inline;
+}
+.first-authors {
+    margin-top: 0;
+}
+</style>
+<p class="first-authors">† First authors</p>
+</div>
+
 
 Introduced in the paper "Roboflow100-VL: A Multi-Domain Object Detection
 Benchmark for Vision-Language Models", RF100-VL is a large-scale collection of 100 multi-modal datasets with diverse concepts not commonly found in VLM pre-training.
