@@ -39,7 +39,7 @@ Several helper functions are available to download RF100-VL and its subsets. The
 
 Here is an example showing how to download the full dataset:
 
-```
+```python
 from rf100vl import download_rf100vl
 
 download_rf100vl()

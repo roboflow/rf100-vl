@@ -18,6 +18,7 @@ authors:
     affiliation: Roboflow
   - given-names: Anish
     family-names: Madan
+    email: anishmad@andrew.cmu.edu
     affiliation: Carnegie Mellon University
   - given-names: Isaac
     family-names: Robinson
@@ -28,6 +29,7 @@ authors:
     affiliation: Carnegie Mellon University
   - given-names: Neehar
     family-names: Peri
+    email: nperi@andrew.cmu.edu
     affiliation: Carnegie Mellon University
 repository-code: 'https://github.com/roboflow/rf100vl/'
 url: 'http://rf100vl.org/'
