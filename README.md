@@ -1,6 +1,6 @@
 <div align="center">
 <h2>Roboflow100-VL:<br>A Multi-Domain Object Detection
-Benchmark for Vision-Language Models</h2>
+Benchmark <br>for Vision-Language Models</h2>
 
 Peter Robicheaux <sup>1†</sup>
 Matvei Popov<sup>1†</sup>
