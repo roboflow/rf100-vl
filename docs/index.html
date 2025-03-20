@@ -237,6 +237,60 @@
             <p>RF100-VL introduces a novel evaluation for assessing the efficacy of vision language models (VLMs) and traditional object detectors in real world settings. As models become increasingly capable, they need to be compared to real world, difficult, and practical scenarios. The Roboflow open source community is increasingly representative of how computer vision is truly being used in real world settings, spanning over 500M user labeled and shared images. RF100-VL is the culmination of aggregating the best high quality open source examples (including those cited in Nature) from a wide array of domains, then relabeling and verifying annotation quality. It supports few shot object detection from image prompts, annotator instructions, and human readable class names. RF100-VL builds on RF100, a benchmark Roboflow introduced at CVPR 2023 that labs from companies like Apple, Baidu, and Microsoft leverage to benchmark vision model capabilities.</p>
         </section>
         <section>
+            <h2>CVPR 2025 Workshop: Challenge of Few-Shot Object Detection from Annotator Instructions</h2>
+            <p>Organized by: Anish Madan, Neehar Peri, Deva Ramanan, Shu Kong</p>
+            
+            <h3>Introduction</h3>
+            <p>This challenge focuses on few-shot object detection with 10 examples of each class provided by a human annotator. Existing FSOD benchmarks repurpose well-established datasets like COCO by partitioning categories into base and novel classes for pre-training and fine-tuning respectively. However, these benchmarks do not reflect how FSOD is deployed in practice.</p>
+            <p>Rather than pre-training on only a small number of base categories, we argue that it is more practical to download a foundational model (e.g., a vision-language model (VLM) pretrained on web-scale data) and fine-tune it for specific applications. We propose a new FSOD benchmark protocol that evaluates detectors pre-trained on any external dataset (not including the target dataset), and fine-tuned on K-shot annotations per C target classes.</p>
+            <p>We propose our new FSOD benchmark using the challenging nuImages dataset. Specifically, participants will be allowed to pre-train their detector on any dataset (except nuScenes or nuImages), and can fine-tune on 10 examples of each of the 18 classes in nuImages.</p>
+            
+            <h3>Benchmarking Protocols</h3>
+            <p><strong>Goal:</strong> Developing robust object detectors using few annotations provided by annotator instructions. The detector should detect object instances of interest in real-world testing images.</p>
+            <p><strong>Environment for model development:</strong></p>
+            <ul>
+                <li><strong>Pretraining:</strong> Models are allowed to pre-train on any existing datasets except nuScenes and nuImages.</li>
+                <li><strong>Fine-Tuning:</strong> Models can fine-tune on 10 shots from each of nuImage's 18 classes.</li>
+                <li><strong>Evaluation:</strong> Models are evaluated on the standard nuImages validation set.</li>
+            </ul>
+            
+            <p><strong>Evaluation metrics:</strong></p>
+            <ul>
+                <li><strong>AP:</strong> The average precision of IoU thresholds from 0.5 to 0.95 with the step size 0.05.</li>
+                <li><strong>AP50 and AP75:</strong> The precision averaged over all instances with IoU threshold as 0.5 and 0.75, respectively.</li>
+                <li><strong>AR (average recall):</strong> Averages the proposal recall at IoU threshold from 0.5 to 1.0 with the step size 0.05, regardless of the classification accuracy.</li>
+            </ul>
+            
+            <h3>Submission Details</h3>
+            <p>Output format: One JSON file of predicted bounding boxes of all test images in a COCO compatible format.</p>
+            <pre>
+[
+  {"image_id": 0, "category_id": 79, "bbox": [976, 632, 64, 80], "score": 99.32915569311469, "image_width": 8192, "image_height": 6144, "scale": 1},
+  {"image_id": 2, "category_id": 18, "bbox": [323, 0, 1724, 237], "score": 69.3080951903575, "image_width": 8192, "image_height": 6144, "scale": 1},
+  ...
+]
+            </pre>
+            
+            <h3>Dataset Details</h3>
+            <p>nuImages is a large-scale 2D detection dataset that extends the popular nuScenes 3D detection dataset. It includes 93,000 images (with 800k foreground objects and 100k semantic segmentation masks) from nearly 500 driving logs. Scenarios are selected using an active-learning approach, ensuring that both rare and diverse examples are included. The annotated images include rain, snow and night time, which are essential for autonomous driving applications.</p>
+            
+            <h3>Official Baseline</h3>
+            <p>We pre-train Detic on ImageNet21-K, COCO Captions, and LVIS and fine-tune it on 10 shots of each nuImages class.</p>
+            
+            <h3>Timeline</h3>
+            <ul>
+                <li>Submission opens: March 1st, 2025</li>
+                <li>Submission closes: May 10th, 2025, 11:59 pm Pacific Time</li>
+                <li>The top 3 participants on the leaderboard will be invited to give a talk at the workshop</li>
+            </ul>
+            
+            <h3>References</h3>
+            <ol>
+                <li>Zhou et. al. "Detecting Twenty-Thousand Classes Using Image-Level Supervision". Proceedings of the IEEE European Conference on Computer Vision. 2022</li>
+                <li>Caesar et. al. "nuScenes: A Multi-Modal Dataset for Autonomous Driving." Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition. 2020.</li>
+            </ol>
+        </section>
+        <section>
             <h2>Citation</h2>
             <p>You can cite RF100-VL in your research using the following citation:</p>
             <pre>

@@ -81,6 +81,63 @@ download_rf100vl(path="./rf100-vl/")
 
 The datasets will be downloaded in COCO JSON format to a directory called `rf100-vl`. Every dataset will be in its own sub-folder.
 
+## CVPR 2025 Workshop: Challenge of Few-Shot Object Detection from Annotator Instructions
+
+**Organized by:** Anish Madan, Neehar Peri, Deva Ramanan, Shu Kong
+
+### Introduction
+
+This challenge focuses on few-shot object detection with 10 examples of each class provided by a human annotator. Existing FSOD benchmarks repurpose well-established datasets like COCO by partitioning categories into base and novel classes for pre-training and fine-tuning respectively. However, these benchmarks do not reflect how FSOD is deployed in practice.
+
+Rather than pre-training on only a small number of base categories, we argue that it is more practical to download a foundational model (e.g., a vision-language model (VLM) pretrained on web-scale data) and fine-tune it for specific applications. We propose a new FSOD benchmark protocol that evaluates detectors pre-trained on any external dataset (not including the target dataset), and fine-tuned on K-shot annotations per C target classes.
+
+We propose our new FSOD benchmark using the challenging nuImages dataset. Specifically, participants will be allowed to pre-train their detector on any dataset (except nuScenes or nuImages), and can fine-tune on 10 examples of each of the 18 classes in nuImages.
+
+### Benchmarking Protocols
+
+**Goal:** Developing robust object detectors using few annotations provided by annotator instructions. The detector should detect object instances of interest in real-world testing images.
+
+**Environment for model development:**
+- **Pretraining:** Models are allowed to pre-train on any existing datasets except nuScenes and nuImages.
+- **Fine-Tuning:** Models can fine-tune on 10 shots from each of nuImage's 18 classes.
+- **Evaluation:** Models are evaluated on the standard nuImages validation set.
+
+**Evaluation metrics:**
+- **AP:** The average precision of IoU thresholds from 0.5 to 0.95 with the step size 0.05.
+- **AP50 and AP75:** The precision averaged over all instances with IoU threshold as 0.5 and 0.75, respectively.
+- **AR (average recall):** Averages the proposal recall at IoU threshold from 0.5 to 1.0 with the step size 0.05, regardless of the classification accuracy.
+
+### Submission Details
+
+Output format: One JSON file of predicted bounding boxes of all test images in a COCO compatible format.
+
+```json
+[
+  {"image_id": 0, "category_id": 79, "bbox": [976, 632, 64, 80], "score": 99.32915569311469, "image_width": 8192, "image_height": 6144, "scale": 1},
+  {"image_id": 2, "category_id": 18, "bbox": [323, 0, 1724, 237], "score": 69.3080951903575, "image_width": 8192, "image_height": 6144, "scale": 1},
+  ...
+]
+```
+
+### Dataset Details
+
+nuImages is a large-scale 2D detection dataset that extends the popular nuScenes 3D detection dataset. It includes 93,000 images (with 800k foreground objects and 100k semantic segmentation masks) from nearly 500 driving logs. Scenarios are selected using an active-learning approach, ensuring that both rare and diverse examples are included. The annotated images include rain, snow and night time, which are essential for autonomous driving applications.
+
+### Official Baseline
+
+We pre-train Detic on ImageNet21-K, COCO Captions, and LVIS and fine-tune it on 10 shots of each nuImages class.
+
+### Timeline
+
+- Submission opens: March 1st, 2025
+- Submission closes: May 10th, 2025, 11:59 pm Pacific Time
+- The top 3 participants on the leaderboard will be invited to give a talk at the workshop
+
+### References
+
+1. Zhou et. al. "Detecting Twenty-Thousand Classes Using Image-Level Supervision". Proceedings of the IEEE European Conference on Computer Vision. 2022
+2. Caesar et. al. "nuScenes: A Multi-Modal Dataset for Autonomous Driving." Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition. 2020.
+
 ## Acknowledgements
 
 This work was supported in part by compute provided by NVIDIA, and the NSF GRFP (Grant No. DGE2140739).
