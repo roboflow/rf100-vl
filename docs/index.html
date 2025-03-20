@@ -421,20 +421,44 @@
         
         @media (max-width: 768px) {
             h1 {
-                font-size: 2.2rem;
+                font-size: 2rem;
             }
             
-            .subheading {
-                font-size: 1.5rem;
+            .subtitle, .subheading {
+                font-size: 1.25rem;
             }
-            
-            section p, .intro-paragraph {
+
+            .authors {
+                display: block;
+            }
+
+            .authors li {
                 font-size: 1rem;
+            }
+            
+            section p, .intro-paragraph, .first-authors {
+                font-size: 1rem;
+            }
+
+            .buttons {
+                gap: 1rem;
+                flex-wrap: wrap;
+                padding: 0;
             }
             
             .buttons li {
                 padding: 0.7rem 1.2rem;
                 font-size: 0.9rem;
+            }
+            header {
+                padding: 1rem;
+                padding-top: 3rem;
+            }
+            main {
+                padding: 0;
+            }
+            section {
+                border-radius: 0;
             }
         }
     </style>
