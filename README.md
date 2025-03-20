@@ -15,6 +15,18 @@ Neehar Peri <sup>2</sup>
 <a target="_blank" href="https://www.cmu.edu/">Carnegie Mellon University</a>
 
 <p class="first-authors">† First authors</p>
+
+<div>
+<a href="https://www.arxiv.org/pdf/2502.13130" target="_blank">
+  <img src="https://img.shields.io/badge/📄_Paper-arXiv-red?style=for-the-badge" alt="Paper" />
+</a>&nbsp;
+<a href="https://universe.roboflow.com/rf100-vl/" target="_blank">
+  <img src="https://img.shields.io/badge/🌐_Datasets-Roboflow_Universe-blue?style=for-the-badge" alt="Datasets" />
+</a>&nbsp;
+<a href="https://rf100-vl.org" target="_blank">
+  <img src="https://img.shields.io/badge/🔗_Website-rf100--vl.org-green?style=for-the-badge" alt="Website" />
+</a>
+</div>
 </div>
 
 
