@@ -61,7 +61,7 @@ abstract: >-
   instructions containing a few visual examples and rich
   textual descriptions. To this
 
-  end, we introduce Roboflow100-VL, a large-scale collection
+  end, we introduce Roboflow 100-VL, a large-scale collection
   of 100 multi-modal
 
   datasets with diverse concepts not commonly found in VLM
