@@ -241,7 +241,7 @@
             <p>Organized by: Anish Madan, Neehar Peri, Deva Ramanan, Shu Kong</p>
             
             <h3>Introduction</h3>
-            <p>This challenge focuses on few-shot object detection with 10 examples of each class provided by a human annotator. Existing FSOD benchmarks repurpose well-established datasets like COCO by partitioning categories into base and novel classes for pre-training and fine-tuning respectively. However, these benchmarks do not reflect how FSOD is deployed in practice.</p>
+            <p>This challenge focuses on few-shot object detection (FSOD) with 10 examples of each class provided by a human annotator. Existing FSOD benchmarks repurpose well-established datasets like COCO by partitioning categories into base and novel classes for pre-training and fine-tuning respectively. However, these benchmarks do not reflect how FSOD is deployed in practice.</p>
             <p>Rather than pre-training on only a small number of base categories, we argue that it is more practical to download a foundational model (e.g., a vision-language model (VLM) pretrained on web-scale data) and fine-tune it for specific applications. We propose a new FSOD benchmark protocol that evaluates detectors pre-trained on any external dataset (not including the target dataset), and fine-tuned on K-shot annotations per C target classes.</p>
             <p>We propose our new FSOD benchmark using the challenging nuImages dataset. Specifically, participants will be allowed to pre-train their detector on any dataset (except nuScenes or nuImages), and can fine-tune on 10 examples of each of the 18 classes in nuImages.</p>
             
