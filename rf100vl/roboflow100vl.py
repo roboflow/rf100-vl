@@ -38,7 +38,7 @@ class DatasetList:
 
 def get_rf100vl_projects(api_key: Optional[str] = None):
     rf = get_rf(api_key)
-    workspace = rf.workspace("rf-100-vl")
+    workspace = rf.workspace("rf100-vl")
     projects = []
     for project in workspace.project_list:
         project = Project(api_key=rf.api_key, a_project=project, model_format="coco")
@@ -49,7 +49,7 @@ def get_rf100vl_projects(api_key: Optional[str] = None):
 
 def get_rf100vl_fsod_projects(api_key: Optional[str] = None):
     rf = get_rf(api_key)
-    workspace = rf.workspace("rf-100-vl-fsod")
+    workspace = rf.workspace("rf100-vl-fsod")
     projects = []
     for project in workspace.project_list:
         project = Project(api_key=api_key, a_project=project, model_format="coco")
@@ -59,7 +59,7 @@ def get_rf100vl_fsod_projects(api_key: Optional[str] = None):
 
 def get_rf20vl_fsod_projects(api_key: Optional[str] = None) -> DatasetList:
     rf = get_rf(api_key)
-    workspace = rf.workspace("roboflow20vl-fsod")
+    workspace = rf.workspace("rf20-vl-fsod")
     projects = []
     for project in workspace.project_list:
         project = Project(api_key=api_key, a_project=project, model_format="coco")
@@ -69,7 +69,7 @@ def get_rf20vl_fsod_projects(api_key: Optional[str] = None) -> DatasetList:
 
 def get_rf20vl_full_projects(api_key: Optional[str] = None) -> DatasetList:
     rf = get_rf(api_key)
-    workspace = rf.workspace("roboflow20vl-full")
+    workspace = rf.workspace("rf20-vl-full")
     projects = []
     for project in workspace.project_list:
         project = Project(api_key=api_key, a_project=project, model_format="coco")
