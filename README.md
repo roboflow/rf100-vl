@@ -40,11 +40,10 @@ You can use RF100-VL to benchmark fully supervised, semi-supervised and few-shot
 
 ## Download RF100-VL
 
-To download RF100-VL, first clone this repository and install it from source:
+To download RF100-VL, first install the `rf100-vl` pip package:
 
 ```
-git clone https://github.com/roboflow/rf100-vl
-pip3 install -e .
+pip install rf100-vl
 ```
 
 RF100-VL is hosted on Roboflow Universe, the world's largest repository of annotated computer vision dataset. You will need a free Roboflow Universe API key to download the dataset. [Learn how to find your API key]()
