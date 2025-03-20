@@ -6,7 +6,7 @@
     <title>Roboflow 100-VL: A Multi-Domain Object Detection Benchmark for Vision-Language Models</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
 
     <meta name="title" content="Roboflow 100-VL: A Multi-Domain Object Detection Benchmark for Vision-Language Models" />
     <meta name="description" content="Roboflow 100-VL (RF100-VL) is a multi-domain object detection benchmark developed by researchers from Roboflow and Carnegie Mellon University." />
@@ -37,129 +37,413 @@
 
 
     <style>
+        :root {
+            /* Roboflow Purple palette */
+            --primary-color: #6706C6; /* 600 */
+            --primary-light: #8315F6; /* 400 */
+            --primary-dark: #4D0499; /* 700 */
+            --primary-50: #F2E6FE;
+            --primary-100: #E2CCFD;
+            --primary-200: #C599FB;
+            --primary-300: #A866FA;
+            --primary-400: #8315F6;
+            --primary-500: #7A0DF0;
+            --primary-600: #6706C6;
+            --primary-700: #4D0499;
+            --primary-800: #3A0273;
+            --primary-900: #27014D;
+            
+            /* Secondary colors */
+            --secondary-color: #35ECD9; /* Aquavision teal */
+            --accent-color: #DFDFDF; /* Light gray */
+            
+            /* Text and background */
+            --text-color: #1F2937; /* Tailwind gray-800 */
+            --light-bg: #F9FAFB; /* Tailwind gray-50 */
+            --dark-bg: #111827; /* Tailwind gray-900 */
+            
+            /* UI elements */
+            --border-radius: 8px;
+            --box-shadow: none;
+            --transition: all 0.3s ease;
+        }
+        
         * {
-            font-family: "Open Sans", serif;
-            line-height: 1.5;
+            font-family: "Inter", sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
+        
         body {
-            padding: 1rem;
-        }
-        main {
-            max-width: 60rem;
-            margin: auto;
-        }
-        header {
-            text-align: center;
-        }
-        .authors, .orgs {
-            list-style: none;
             padding: 0;
             margin: 0;
+            color: var(--text-color);
+            background-color: #ffffff;
+            background-image: linear-gradient(to bottom, #f8f9fa 0%, #ffffff 100%);
+            background-attachment: fixed;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="none"/><circle cx="50" cy="50" r="1" fill="%236706C610"/></svg>');
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        main {
+            max-width: 65rem;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        header {
+            text-align: center;
+            padding: 3rem 2.5rem 2rem;
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.95) 100%);
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
+            border: 1px solid rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color), var(--primary-light), var(--secondary-color));
+        }
+        
+        .authors, .orgs {
+            list-style: none;
+            padding: 0 2rem;
+            margin: 1rem 0;
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
+            gap: 1rem;
         }
+        
         .authors li, .orgs li {
-            display: inline;
-            margin-right: 1rem;
+            display: inline-block;
         }
-        .authors li:first-child, .orgs li:first-child {
-            margin-left: 0;
-        }
-        .authors li:last-child, .orgs li:last-child {
-            margin-right: 0;
-        }
+        
         .orgs {
-            margin-top: 1rem;
+            margin-top: 1.5rem;
         }
+        
         .authors li a, .orgs li a {
-            color: hsla(210, 67%, 58%, 0.862);
+            color: var(--primary-color);
+            transition: var(--transition);
+            font-weight: 500;
         }
+        
+        .authors li a:hover, .orgs li a:hover {
+            color: var(--primary-400);
+            text-decoration: underline;
+        }
+        
         .buttons {
-            padding-top: 1rem;
-            padding-bottom: 1rem;
+            padding: 1.5rem 0;
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 1rem 0;
         }
+        
         .buttons li {
-            display: inline;
-            margin-right: 1rem;
-            background-color: #2f2f2f;
+            display: inline-flex;
+            background-color: var(--dark-bg);
             color: white;
-            padding: 1rem;
+            padding: 0.8rem 1.8rem;
             border-radius: 2rem;
             align-items: center;
             justify-content: center;
-            align-content: center;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            white-space: nowrap;
         }
+        
+        .buttons li::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, #2a2a2a, #444);
+            transition: var(--transition);
+            z-index: -1;
+        }
+        
+        .buttons li:hover::before {
+            left: 0;
+        }
+        
+        .buttons li:hover {
+            transform: translateY(-2px);
+            background-color: #2a2a2a;
+        }
+        
         .buttons li .icon {
-            align-items: center;
-            justify-content: center;
-            align-content: center;
             display: inline-flex;
+            align-items: center;
+            margin-right: 0.5rem;
         }
+        
         .buttons li a {
             color: white;
             text-decoration: none;
+            display: flex;
+            align-items: center;
         }
-        .buttons li svg {
-            max-height: 1.5rem;
+        
+        .buttons li svg, .buttons li img {
+            max-height: 1.2rem;
+            margin-right: 0.5rem;
         }
+        
+        section {
+            background-color: white;
+            padding: 2rem 3rem;
+            margin: 2rem 0;
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+        }
+        
         section h2 {
-            margin-top: 2rem;
+            color: var(--primary-600);
+            margin: 0 0 1.5rem 0;
             text-align: center;
+            font-weight: 600;
+            position: relative;
+            padding-bottom: 0.5rem;
         }
+        
+        section h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+            border-radius: 3px;
+        }
+        
+        section h3 {
+            color: var(--primary-500);
+            margin: 1.5rem 0 1rem;
+            font-weight: 500;
+        }
+        
         section p {
-            max-width: 35rem;
-            margin: auto;
-            text-align: justify;
+            max-width: 100%;
+            margin: 0 0 1.2rem;
+            color: var(--text-color);
+            font-size: 1.05rem;
+            line-height: 1.7;
         }
+        
+        section p + p {
+            text-indent: 0;
+            margin-top: -0.4rem;
+        }
+        
+        section ul, section ol {
+            max-width: 100%;
+            margin: 1.2rem 0;
+            padding-left: 2rem;
+        }
+        
+        section li {
+            margin-bottom: 0.7rem;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
         .header-img {
             max-width: 100%;
             max-height: 35rem;
-            border: 1px solid #2f2f2f;
+            border-radius: var(--border-radius);
+            margin: 1.5rem 0;
+            padding: 0.5rem;
+            background-color: white;
+            border: 1px solid rgba(0,0,0,0.05);
         }
+        
         .intro-paragraph {
-            text-align: justify;
+            font-size: 1.1rem;
+            margin: 1.5rem 0;
+            max-width: 100%;
+            color: var(--text-color);
+            line-height: 1.7;
+            text-align: left;
         }
+        
         figcaption {
             font-style: italic;
+            text-align: center;
+            margin-top: 0.5rem;
+            color: #777;
+            font-size: 0.9rem;
+            max-width: 100%;
+            padding: 0 1rem;
         }
-        .buttons img {
-            max-height: 1rem;
-        }
+        
         pre {
-            background-color: #f4f4f4;
-            padding: 1rem;
-            border-radius: 0.5rem;
-            text-wrap: wrap;
-            white-space: pre-wrap;
+            background-color: var(--light-bg);
+            padding: 1.2rem;
+            border-radius: var(--border-radius);
+            white-space: pre;
+            border-left: 4px solid var(--primary-color);
+            font-family: monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            border: 1px solid rgba(0,0,0,0.05);
         }
+        
         h1 {
-            color: rgb(54, 54, 54);
-            margin-bottom: 0;
-            font-weight: 500;
-            font-size: 2.5rem;
+            color: var(--text-color);
+            margin-bottom: 0.2rem;
+            font-weight: 700;
+            font-size: 3.2rem;
+            line-height: 1.2;
+            background: linear-gradient(90deg, var(--primary-dark), var(--primary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            padding: 0 1.5rem;
         }
+        
         .subheading {
-            color: rgba(171, 20, 20, 0.874);
-            font-size: 2rem;
-            margin-top: 0;
+            color: var(--primary-600);
+            font-size: 1.8rem;
+            margin: 0.5rem 0 1.5rem;
+            font-weight: 600;
         }
+        
+        .subtitle {
+            color: var(--text-color);
+            font-size: 1.5rem;
+            margin: 0.5rem 0 1.5rem;
+            font-weight: 500;
+            padding: 0 1.5rem;
+            line-height: 1.4;
+        }
+        
         .first-authors {
-            margin: 0;
+            margin: 0.5rem 0;
+            font-style: italic;
+            color: #666;
         }
+        
+        .citation {
+            overflow-x: auto;
+        }
+        
+        .citation, .json-example {
+            overflow-x: auto;
+            white-space: pre;
+        }
+        
         header p, header li {
-            font-size: 1.25rem;
-            color: rgb(74, 74, 74);
+            font-size: 1.15rem;
+            color: var(--text-color);
         }
+        
         a {
+            color: var(--primary-600);
             text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        a:hover {
+            color: var(--primary-400);
+        }
+        
+        strong {
+            color: var(--primary-800);
+            font-weight: 600;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            color: #777;
+            font-size: 0.85rem;
+            margin-top: 2rem;
+            border-top: 1px solid rgba(0,0,0,0.05);
+            background-color: transparent;
+        }
+        
+        footer a {
+            font-weight: 500;
+        }
+        
+        iframe {
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(0,0,0,0.05);
+            padding: 0.5rem;
+            background-color: white;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .subheading {
+                font-size: 1.5rem;
+            }
+            
+            section p, .intro-paragraph {
+                font-size: 1rem;
+            }
+            
+            .buttons li {
+                padding: 0.7rem 1.2rem;
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
 <body>
     <main>
         <header>
-            <h1>Roboflow 100-VL: A Multi-Domain Object Detection Benchmark for Vision-Language Models</h1>
+            <h1>Roboflow 100-VL</h1>
+            <p class="subtitle">A Multi-Domain Object Detection Benchmark for Vision-Language Models</p>
             <p class="subheading">CVPR 2025 Workshop</p>
             <ul class="authors">
                 <li>
@@ -204,12 +488,12 @@
                 <a href="https://universe.roboflow.com/rf100-vl/" class="external-link button is-normal is-rounded is-dark">
                     <li>
                         <img src="./assets/uni-logo.svg">
-                        Roboflow Universe Datasets
+                        Explore Datasets
                     </li>
                 </a>
                 <a href="https://github.com/roboflow/rf100-vl/" class="external-link button is-normal is-rounded is-dark">
                     <li>
-                        <img src="./assets/github-logo.svg">
+                        <img src="./assets/github-icon.svg">
                         Code
                     </li>
                 </a>
@@ -263,13 +547,11 @@
             
             <h3>Submission Details</h3>
             <p>Output format: One JSON file of predicted bounding boxes of all test images in a COCO compatible format.</p>
-            <pre>
-[
+            <pre class="json-example">[
   {"image_id": 0, "category_id": 79, "bbox": [976, 632, 64, 80], "score": 99.32915569311469, "image_width": 8192, "image_height": 6144, "scale": 1},
   {"image_id": 2, "category_id": 18, "bbox": [323, 0, 1724, 237], "score": 69.3080951903575, "image_width": 8192, "image_height": 6144, "scale": 1},
   ...
-]
-            </pre>
+]</pre>
             
             <h3>Dataset Details</h3>
             <p>nuImages is a large-scale 2D detection dataset that extends the popular nuScenes 3D detection dataset. It includes 93,000 images (with 800k foreground objects and 100k semantic segmentation masks) from nearly 500 driving logs. Scenarios are selected using an active-learning approach, ensuring that both rare and diverse examples are included. The annotated images include rain, snow and night time, which are essential for autonomous driving applications.</p>
@@ -293,13 +575,11 @@
         <section>
             <h2>Citation</h2>
             <p>You can cite RF100-VL in your research using the following citation:</p>
-            <pre>
-@misc{Robicheaux_Roboflow_100_VL,
+            <pre class="citation">@misc{Robicheaux_Roboflow_100_VL,
     author = {Robicheaux, Peter and Popov, Matvei and Madan, Anish and Robinson, Isaac and Ramanan, Deva and Peri, Neehar},
     title = {{Roboflow 100 VL}},
     url = {https://github.com/roboflow/rf100-vl/}
-}
-            </pre>
+}</pre>
         </section>
         <ul class="buttons">
             <a target="_blank" href="https://www.arxiv.org/pdf/2502.13130" class="external-link button is-normal is-rounded is-dark">
@@ -312,12 +592,12 @@
             <a href="https://universe.roboflow.com/rf100-vl/" class="external-link button is-normal is-rounded is-dark">
                 <li>
                     <img src="./assets/uni-logo.svg">
-                    Roboflow Universe Datasets
+                    Explore Datasets
                 </li>
             </a>
             <a href="https://github.com/roboflow/rf100-vl/" class="external-link button is-normal is-rounded is-dark">
                 <li>
-                    <img src="./assets/github-logo.svg">
+                    <img src="./assets/github-icon.svg">
                     Code
                 </li>
             </a>
