@@ -69,7 +69,7 @@ def get_rf20vl_fsod_projects(api_key: Optional[str] = None) -> DatasetList:
 
 def get_rf20vl_full_projects(api_key: Optional[str] = None) -> DatasetList:
     rf = get_rf(api_key)
-    workspace = rf.workspace("rf20-vl-full")
+    workspace = rf.workspace("rf20-vl")
     projects = []
     for project in workspace.project_list:
         project = Project(api_key=api_key, a_project=project, model_format="coco")
