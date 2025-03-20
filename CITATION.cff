@@ -31,8 +31,8 @@ authors:
     family-names: Peri
     email: nperi@andrew.cmu.edu
     affiliation: Carnegie Mellon University
-repository-code: 'https://github.com/roboflow/rf100vl/'
-url: 'http://rf100vl.org/'
+repository-code: 'https://github.com/roboflow/rf100-vl/'
+url: 'http://rf100-vl.org/'
 abstract: >-
   Vision-language models (VLMs) trained on internet-scale
   data achieve remark-

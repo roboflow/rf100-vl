@@ -32,7 +32,7 @@ You can use RF100-VL to benchmark fully supervised, semi-supervised and few-shot
 To download RF100-VL, first clone this repository and install it from source:
 
 ```
-git clone https://github.com/roboflow/rf100vl
+git clone https://github.com/roboflow/rf100-vl
 pip3 install -e .
 ```
 
@@ -48,14 +48,14 @@ Several helper functions are available to download RF100-VL and its subsets. The
 
 | Data Loader Name               | Dataset Name           |
 |--------------------------------|------------------------|
-| `get_rf100vl_fsod_projects`      | RF100VL-FSOD          |
-| `get_rf100vl_projects`           | RF100VL               |
-| `get_rf20vl_fsod_projects`       | RF20VL-FSOD           |
-| `get_rf20vl_full_projects`       | RF20VL           |
-| `download_rf100vl_fsod`          | RF100VL-FSOD          |
-| `download_rf100vl`               | RF100VL               |
-| `download_rf20vl_fsod`           | RF20VL-FSOD           |
-| `download_rf20vl_full`           | RF20VL           |
+| `get_rf100vl_fsod_projects`      | RF100-VL-FSOD          |
+| `get_rf100vl_projects`           | RF100-VL               |
+| `get_rf20vl_fsod_projects`       | RF20-VL-FSOD           |
+| `get_rf20vl_full_projects`       | RF20-VL           |
+| `download_rf100vl_fsod`          | RF100-VL-FSOD          |
+| `download_rf100vl`               | RF100-VL               |
+| `download_rf20vl_fsod`           | RF20-VL-FSOD           |
+| `download_rf20vl_full`           | RF20-VL           |
 
 Each dataset object has its own `download` method.
 
@@ -64,10 +64,10 @@ Here is an example showing how to download the full dataset:
 ```python
 from rf100vl import download_rf100vl
 
-download_rf100vl(path="./rf100vl/")
+download_rf100vl(path="./rf100-vl/")
 ```
 
-The datasets will be downloaded in COCO JSON format to a directory called `rf100vl`. Every dataset will be in its own sub-folder.
+The datasets will be downloaded in COCO JSON format to a directory called `rf100-vl`. Every dataset will be in its own sub-folder.
 
 ## Acknowledgements
 
