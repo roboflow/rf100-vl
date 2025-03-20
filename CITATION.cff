@@ -31,8 +31,8 @@ authors:
     family-names: Peri
     email: nperi@andrew.cmu.edu
     affiliation: Carnegie Mellon University
-repository-code: 'https://github.com/roboflow/rf100vl/'
-url: 'http://rf100vl.org/'
+repository-code: 'https://github.com/roboflow/rf100-vl/'
+url: 'http://rf100-vl.org/'
 abstract: >-
   Vision-language models (VLMs) trained on internet-scale
   data achieve remark-
@@ -61,7 +61,7 @@ abstract: >-
   instructions containing a few visual examples and rich
   textual descriptions. To this
 
-  end, we introduce Roboflow100-VL, a large-scale collection
+  end, we introduce Roboflow 100-VL, a large-scale collection
   of 100 multi-modal
 
   datasets with diverse concepts not commonly found in VLM

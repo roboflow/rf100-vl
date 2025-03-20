@@ -5,9 +5,9 @@ with open('requirements.txt') as f:
     requirements = f.read().splitlines()
 
 setup(
-    name="rf100vl",
+    name="rf100-vl",
     version="0.1.0",
-    description="RF100VL Dataset Interface",
+    description="RF100-VL Dataset Interface",
     author="Peter Robicheaux",
     author_email="peter@roboflow.com",
     packages=find_packages(),
