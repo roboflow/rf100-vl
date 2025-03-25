@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+Put your HTML text here<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -529,12 +529,12 @@
                 <figcaption><b>Figure 1.</b> We identify a set of 100 challenging datasets from Roboflow
                     Universe that contain concepts not typically found in internet-scale pre-training.</figcaption>
             </figure>
-            <p class="intro-paragraph"><b>Roboflow 100</b> Vision Language (RF100-VL) is the first benchmark to ask, “How well does your VLM do in understanding the real world?” In pursuit of this question, RF100-VL introduces 100 open source datasets containing object detection bounding boxes and multimodal few shot instruction image-text pairs across novel image domains. The dataset is comprised of 164,149 images and 1,355,491, annotations across seven domains, including aerial, biological, and industrial imagery. 1693 labeling hours were spent labeling, reviewing, and preparing the dataset.</p>
-            <p class="intro-paragraph">RF100-VL is a curated sample from <a href="https://universe.roboflow.com">Roboflow Universe</a>, a repository of over 500,000+ datasets that collectively demonstrate how computer vision is being leveraged in production problems today. Current state-of-the-art models trained on web-scale data like QwenVL2.5 and GroundingDINO achieve as low as 1% AP in some categories represented in RF100-VL.</p>
+            <p class="intro-paragraph"><b>Roboflow 100</b> Vision Language (RF100-VL) is the first benchmark to ask, “How well does your VLM understand the real world?” In pursuit of this question, RF100-VL introduces 100 open source datasets containing object detection bounding boxes and multimodal few shot instruction with visual examples and rich textual descriptions across novel image domains. The dataset is comprised of 164,149 images and 1,355,491, annotations across seven domains, including aerial, biological, and industrial imagery. 1693 labeling hours were spent labeling, reviewing, and preparing the dataset.</p>
+            <p class="intro-paragraph">RF100-VL is a curated sample from <a href="https://universe.roboflow.com">Roboflow Universe</a>, a repository of over 500,000+ datasets that collectively demonstrate how computer vision is being leveraged in production problems today. Current state-of-the-art models trained on web-scale data like QwenVL2.5 and GroundingDINO achieve as low as 2% AP in some categories represented in RF100-VL.</p>
         </header>
         <section>
             <h2>Abstract</h2>
-            <p>Vision-language models (VLMs) trained on internet-scale data achieve remarkable zero-shot detection performance on common objects like car, truck, and pedestrian. However, state-of-the-art models still struggle to generalize to out- of-distribution tasks (e.g. material property estimation, defect detection, and contextual action recognition) and imaging modalities (e.g. X-rays, thermal-spectrum data, and aerial images) not typically found in their pre-training. Rather than simply re-training VLMs on more data, we argue that out-of-domain generalization can be principally addressed through the lens of few-shot learning by aligning VLMs to new concepts with annotation instructions containing a few visual examples and rich textual descriptions. To this end, we introduce Roboflow-VL, a large-scale collection of 100 multi-modal datasets with diverse concepts not commonly found in VLM pre-training. Notably, state-of-the-art models like GroundingDINO and Qwen2.5-VL achieve less than 1% AP on many domains in Roboflow-VL. Our code and dataset are available on GitHub and Roboflow.</p>
+            <p>Vision-language models (VLMs) trained on internet-scale data achieve remarkable zero-shot detection performance on common objects like car, truck, and pedestrian. However, state-of-the-art models still struggle to generalize to out-of-distribution tasks (e.g. material property estimation, defect detection, and contextual action recognition) and imaging modalities (e.g. X-rays, thermal-spectrum data, and aerial images) not typically found in their pre-training. Rather than simply re-training VLMs on more visual data (the dominant paradigm for few-shot learning), we argue that one should align VLMs to new concepts with annotation instructions containing a few visual examples and rich textual descriptions. To this end, we introduce Roboflow100-VL, a large-scale collection of 100 multi-modal datasets with diverse concepts not commonly found in VLM pre-training. Notably, state-of-the-art models like GroundingDINO and Qwen2.5-VL achieve less than 2% zero-shot accuracy on challenging medical imaging datasets within Roboflow100-VL, demonstrating the need for few-shot concept alignment.</p>
         </section>
         <section>
             <h2>Explore the Dataset</h2>
@@ -547,55 +547,61 @@
             <p>RF100-VL introduces a novel evaluation for assessing the efficacy of vision language models (VLMs) and traditional object detectors in real world settings. As models become increasingly capable, they need to be compared to real world, difficult, and practical scenarios. The Roboflow open source community is increasingly representative of how computer vision is truly being used in real world settings, spanning over 500M user labeled and shared images. RF100-VL is the culmination of aggregating the best high quality open source examples (including those cited in Nature) from a wide array of domains, then relabeling and verifying annotation quality. It supports few shot object detection from image prompts, annotator instructions, and human readable class names. RF100-VL builds on RF100, a benchmark Roboflow introduced at CVPR 2023 that labs from companies like Apple, Baidu, and Microsoft leverage to benchmark vision model capabilities.</p>
         </section>
         <section>
-            <h2>CVPR 2025 Workshop: Challenge of Few-Shot Object Detection from Annotator Instructions</h2>
+            <h2>CVPR 2025 Workshop Challenge: Few-Shot Object Detection from Annotator Instructions</h2>
             <p>Organized by: Anish Madan, Neehar Peri, Deva Ramanan, Shu Kong</p>
             
             <h3>Introduction</h3>
             <p>This challenge focuses on few-shot object detection (FSOD) with 10 examples of each class provided by a human annotator. Existing FSOD benchmarks repurpose well-established datasets like COCO by partitioning categories into base and novel classes for pre-training and fine-tuning respectively. However, these benchmarks do not reflect how FSOD is deployed in practice.</p>
             <p>Rather than pre-training on only a small number of base categories, we argue that it is more practical to download a foundational model (e.g., a vision-language model (VLM) pretrained on web-scale data) and fine-tune it for specific applications. We propose a new FSOD benchmark protocol that evaluates detectors pre-trained on any external dataset (not including the target dataset), and fine-tuned on K-shot annotations per C target classes.</p>
-            <p>We propose our new FSOD benchmark using the challenging nuImages dataset. Specifically, participants will be allowed to pre-train their detector on any dataset (except nuScenes or nuImages), and can fine-tune on 10 examples of each of the 18 classes in nuImages.</p>
+            <p>We evaluate a subset of 20 datasets from Roboflow-VL. Each dataset is independently evaluated using AP. Roboflow-VL includes datasets that are out-of-distribution from typical internet-scale pre-training data, making it a particularly challenging (even for VLMs) for Foundational FSOD.</p>
             
             <h3>Benchmarking Protocols</h3>
             <p><strong>Goal:</strong> Developing robust object detectors using few annotations provided by annotator instructions. The detector should detect object instances of interest in real-world testing images.</p>
             <p><strong>Environment for model development:</strong></p>
             <ul>
-                <li><strong>Pretraining:</strong> Models are allowed to pre-train on any existing datasets except nuScenes and nuImages.</li>
-                <li><strong>Fine-Tuning:</strong> Models can fine-tune on 10 shots from each of nuImage's 18 classes.</li>
-                <li><strong>Evaluation:</strong> Models are evaluated on the standard nuImages validation set.</li>
+                <li><strong>Pretraining:</strong> Models are allowed to pre-train on any existing datasets.</li>
+                <li><strong>Fine-Tuning:</strong> Models can fine-tune on 10 shots from each of RF20-VL's datasets.</li>
+                <li><strong>Evaluation:</strong> Models are evaluated on RF20-VL's test set. Each dataset is evaluated independently.</li>
             </ul>
             
             <p><strong>Evaluation metrics:</strong></p>
             <ul>
                 <li><strong>AP:</strong> The average precision of IoU thresholds from 0.5 to 0.95 with the step size 0.05.</li>
-                <li><strong>AP50 and AP75:</strong> The precision averaged over all instances with IoU threshold as 0.5 and 0.75, respectively.</li>
-                <li><strong>AR (average recall):</strong> Averages the proposal recall at IoU threshold from 0.5 to 1.0 with the step size 0.05, regardless of the classification accuracy.</li>
             </ul>
             
             <h3>Submission Details</h3>
-            <p>Output format: One JSON file of predicted bounding boxes of all test images in a COCO compatible format.</p>
-            <pre class="json-example">[
-  {"image_id": 0, "category_id": 79, "bbox": [976, 632, 64, 80], "score": 99.32915569311469, "image_width": 8192, "image_height": 6144, "scale": 1},
-  {"image_id": 2, "category_id": 18, "bbox": [323, 0, 1724, 237], "score": 69.3080951903575, "image_width": 8192, "image_height": 6144, "scale": 1},
-  ...
+            <p>Submit a zip file with pickle files for each dataset. The name of each pickle file should match the name of each dataset. Each pickle file should use the following COCO format.</p>
+            <pre class="json-example"> [ 
+"image_id": int,
+"instances":
+  [{ "image_id": int,
+  "category_id": int,
+  "bbox": [x,y,width,height],
+  "score": float
+  },
+  {"image_id": int,
+  "category_id": int,
+  "bbox": [x,y,width,height],
+  "score": float }, ... ,],
+  ...,
 ]</pre>
             
-            <h3>Dataset Details</h3>
-            <p>nuImages is a large-scale 2D detection dataset that extends the popular nuScenes 3D detection dataset. It includes 93,000 images (with 800k foreground objects and 100k semantic segmentation masks) from nearly 500 driving logs. Scenarios are selected using an active-learning approach, ensuring that both rare and diverse examples are included. The annotated images include rain, snow and night time, which are essential for autonomous driving applications.</p>
+            <p>We've provided a <a href="https://drive.google.com/file/d/1Pp8oAYMMnCxTzFa078NS3CuzdNlIEVzp/view">sample submission</a> for your reference. Submissions should be uploaded to our <a href="https://eval.ai/web/challenges/challenge-page/2459/overview">EvalAI Server</a>.</p>
             
             <h3>Official Baseline</h3>
-            <p>We pre-train Detic on ImageNet21-K, COCO Captions, and LVIS and fine-tune it on 10 shots of each nuImages class.</p>
+            <p>We pre-train Detic on ImageNet21-K, COCO Captions, and LVIS. We evaluate this pre-trained model zero-shot on the datasets in RF20-VL. Our baseline code is available <a href="https://github.com/anishmadan23/foundational_fsod/tree/fsod_rf20vl?tab=readme-ov-file">here</a>.</p>
             
             <h3>Timeline</h3>
             <ul>
-                <li>Submission opens: March 1st, 2025</li>
-                <li>Submission closes: May 10th, 2025, 11:59 pm Pacific Time</li>
+                <li>Submission opens: March 15th, 2025</li>
+                <li>Submission closes: June 8th, 2025, 11:59 pm Pacific Time</li>
                 <li>The top 3 participants on the leaderboard will be invited to give a talk at the workshop</li>
             </ul>
             
             <h3>References</h3>
             <ol>
+                <li>Madan et. al. "Revisiting Few-Shot Object Detection with Vision-Language Models." Proceedings of the Conference on Neural Information Processing Systems. 2024 </li>
                 <li>Zhou et. al. "Detecting Twenty-Thousand Classes Using Image-Level Supervision". Proceedings of the IEEE European Conference on Computer Vision. 2022</li>
-                <li>Caesar et. al. "nuScenes: A Multi-Modal Dataset for Autonomous Driving." Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition. 2020.</li>
             </ol>
         </section>
         <section>
