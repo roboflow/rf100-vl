@@ -89,7 +89,7 @@ This challenge focuses on few-shot object detection (FSOD) with 10 examples of e
 
 Rather than pre-training on only a small number of base categories, we argue that it is more practical to download a foundational model (e.g., a vision-language model (VLM) pretrained on web-scale data) and fine-tune it for specific applications. We propose a new FSOD benchmark protocol that evaluates detectors pre-trained on any external dataset (not including the target dataset), and fine-tuned on K-shot annotations per C target classes.
 
-We evaluate a subset of 20 datasets from Roboflow-VL. Each dataset is independently evaluated using AP. Roboflow-VL includes datasets that are out-of-distribution from typical internet-scale pre-training data, making it a particularly challenging (even for VLMs) for Foundational FSOD..
+We evaluate a subset of 20 datasets from Roboflow-VL. Each dataset is independently evaluated using AP. Roboflow-VL includes datasets that are out-of-distribution from typical internet-scale pre-training data, making it a particularly challenging (even for VLMs) for Foundational FSOD.
 
 ### Benchmarking Protocols
 
@@ -97,8 +97,8 @@ We evaluate a subset of 20 datasets from Roboflow-VL. Each dataset is independen
 
 **Environment for model development:**
 - **Pretraining:** Models are allowed to pre-train on any existing datasets.
-- **Fine-Tuning:** Models can fine-tune on 10 shots from each of RF100-VL's datasets
-- **Evaluation:** Models are evaluated on RF100-VL's test set. Each dataset is evaluated independently.
+- **Fine-Tuning:** Models can fine-tune on 10 shots from each of RF20-VL's datasets
+- **Evaluation:** Models are evaluated on RF20-VL's test set. Each dataset is evaluated independently.
 
 **Evaluation metrics:**
 - **AP:** The average precision of IoU thresholds from 0.5 to 0.95 with the step size 0.05.
