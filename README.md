@@ -97,8 +97,8 @@ We evaluate a subset of 20 datasets from Roboflow-VL. Each dataset is independen
 
 **Environment for model development:**
 - **Pretraining:** Models are allowed to pre-train on any existing datasets.
-- **Fine-Tuning:** Models can fine-tune on 10 shots from each of RF20-VL's datasets
-- **Evaluation:** Models are evaluated on RF20-VL's test set. Each dataset is evaluated independently.
+- **Fine-Tuning:** Models can fine-tune on 10 shots from each of RF20-VL-FSOD's datasets
+- **Evaluation:** Models are evaluated on RF20-VL-FSOD's test set. Each dataset is evaluated independently.
 
 **Evaluation metrics:**
 - **AP:** The average precision of IoU thresholds from 0.5 to 0.95 with the step size 0.05.
