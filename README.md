@@ -91,6 +91,16 @@ Rather than pre-training on only a small number of base categories, we argue tha
 
 We evaluate a subset of 20 datasets from Roboflow-VL. Each dataset is independently evaluated using AP. Roboflow-VL includes datasets that are out-of-distribution from typical internet-scale pre-training data, making it a particularly challenging (even for VLMs) for Foundational FSOD.
 
+:rotating_light: Top performing teams can win cash prizes! :rotating_light:
+
+:1st_place_medal: 1st Place: $750
+
+:2nd_place_medal: 2nd Place: $500
+
+:3rd_place_medal: 3rd Place: $250
+
+To be eligible for prizes, teams must submit a technical report, open source their code, and provide instructions on how to reproduce their results. 
+
 ### Benchmarking Protocols
 
 **Goal:** Developing robust object detectors using few annotations provided by annotator instructions. The detector should detect object instances of interest in real-world testing images.
