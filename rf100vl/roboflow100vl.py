@@ -52,7 +52,7 @@ def get_rf100vl_fsod_projects(api_key: Optional[str] = None):
     workspace = rf.workspace("rf100-vl-fsod")
     projects = []
     for project in workspace.project_list:
-        project = Project(api_key=api_key, a_project=project, model_format="coco")
+        project = Project(api_key=rf.api_key, a_project=project, model_format="coco")
         projects.append(project)
     return DatasetList(projects)
 
@@ -62,7 +62,7 @@ def get_rf20vl_fsod_projects(api_key: Optional[str] = None) -> DatasetList:
     workspace = rf.workspace("rf20-vl-fsod")
     projects = []
     for project in workspace.project_list:
-        project = Project(api_key=api_key, a_project=project, model_format="coco")
+        project = Project(api_key=rf.api_key, a_project=project, model_format="coco")
         projects.append(project)
     return DatasetList(projects)
 
@@ -72,7 +72,7 @@ def get_rf20vl_full_projects(api_key: Optional[str] = None) -> DatasetList:
     workspace = rf.workspace("rf20-vl")
     projects = []
     for project in workspace.project_list:
-        project = Project(api_key=api_key, a_project=project, model_format="coco")
+        project = Project(api_key=rf.api_key, a_project=project, model_format="coco")
         projects.append(project)
     return DatasetList(projects)
 
