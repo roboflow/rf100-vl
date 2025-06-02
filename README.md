@@ -5,8 +5,8 @@ Benchmark <br>for Vision-Language Models</h2>
 Peter Robicheaux <sup>1†</sup>
 Matvei Popov<sup>1†</sup>
 Anish Madan <sup>2</sup>
-
 Isaac Robinson <sup>1</sup>
+
 Joseph Nelson <sup>1</sup>
 Deva Ramanan <sup>2</sup>
 Neehar Peri <sup>2</sup>
@@ -14,7 +14,7 @@ Neehar Peri <sup>2</sup>
 <a target="_blank" href="https://roboflow.com">Roboflow</a>&nbsp;&nbsp;&nbsp;
 <a target="_blank" href="https://www.cmu.edu/">Carnegie Mellon University</a>
 
-<p class="first-authors">† First authors</p>
+<p class="first-authors">† Equal Contribution</p>
 
 <div>
 <!-- <a href="https://www.arxiv.org/pdf/2502.13130" target="_blank">
@@ -30,13 +30,11 @@ Neehar Peri <sup>2</sup>
 </div>
 
 
-Introduced in the paper "[Roboflow 100-VL: A Multi-Domain Object Detection Benchmark for Vision-Language Models](https://media.roboflow.com/rf100vl/rf100vl.pdf)", RF100-VL is a large-scale collection of 100 multi-modal datasets with diverse concepts not commonly found in VLM pre-training.
+Introduced in the paper "[Roboflow 100-VL: A Multi-Domain Object Detection Benchmark for Vision-Language Models](https://arxiv.org/pdf/2505.20612)", RF100-VL is a large-scale collection of 100 multi-modal datasets with diverse concepts not commonly found in VLM pre-training.
 
 The benchmark includes images, with corresponding annotations, from seven domains: flora and fauna, sport, industry, document processing, laboratory imaging, aerial imagery, and miscellaneous datasets related to various use cases for which detection models are commonly used.
 
 You can use RF100-VL to benchmark fully supervised, semi-supervised and few-shot object detection models, and Vision Language Models (VLMs) with localization capabilities.
-
-![](https://media.roboflow.com/rf100vl/results.png)
 
 ## Download RF100-VL
 
@@ -81,7 +79,7 @@ The datasets will be downloaded in COCO JSON format to a directory called `rf100
 
 ## CVPR 2025 Workshop Challenge: Few-Shot Object Detection from Annotator Instructions
 
-**Organized by:** Anish Madan, Neehar Peri, Deva Ramanan, Shu Kong
+**Organized by:** Anish Madan, Neehar Peri, Deva Ramanan
 
 ### Introduction
 
@@ -99,7 +97,7 @@ We evaluate a subset of 20 datasets from Roboflow-VL. Each dataset is independen
 
 :3rd_place_medal: 3rd Place: $250
 
-To be eligible for prizes, teams must submit a technical report, open source their code, and provide instructions on how to reproduce their results. 
+To be eligible for prizes, teams must submit a technical report, open source their code, and provide instructions on how to reproduce their results. Teams must also beat our best performing official baseline to be eligible for prizes. Many thanks to Roboflow for sponsoring prizes!
 
 ### Benchmarking Protocols
 
@@ -161,3 +159,13 @@ This work was supported in part by compute provided by NVIDIA, and the NSF GRFP 
 
 The datasets that comprise RF100-VL are licensed under an [Apache 2.0 license](LICENSE).
 
+## Citation
+If you find our paper and code repository useful, please cite us:
+```bib
+@article{robicheaux2025roboflow100vl,
+  title={Roboflow100-vl: A multi-domain object detection benchmark for vision-language models},
+  author={Robicheaux, Peter and Popov, Matvei and Madan, Anish and Robinson, Isaac and Nelson, Joseph and Ramanan, Deva and Peri, Neehar},
+  journal={arXiv preprint arXiv:2505.20612},
+  year={2025}
+}
+```
