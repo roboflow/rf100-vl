@@ -79,10 +79,12 @@ class RF100VlDataset:
             if cat["id"] != 0
         ]
 
-        new_data_ann["images"] = data_ann["images"]
+        new_data_ann["images"] = deepcopy(data_ann["images"])
         new_data_ann["annotations"] = deepcopy(data_ann["annotations"])
 
+        annotation_ids_shift = 1 - min([z["id"] for z in new_data_ann["annotations"]])
         for ann in new_data_ann["annotations"]:
             ann["category_id"] = ann["category_id"] - 1
+            ann["id"] = ann["id"] + annotation_ids_shift
 
         return new_data_ann
