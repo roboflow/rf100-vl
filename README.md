@@ -163,9 +163,9 @@ The datasets that comprise RF100-VL are licensed under an [Apache 2.0 license](L
 If you find our paper and code repository useful, please cite us:
 ```bib
 @article{robicheaux2025roboflow100vl,
-  title={Roboflow100-vl: A multi-domain object detection benchmark for vision-language models},
+  title={Roboflow100-VL: A multi-domain object detection benchmark for vision-language models},
   author={Robicheaux, Peter and Popov, Matvei and Madan, Anish and Robinson, Isaac and Nelson, Joseph and Ramanan, Deva and Peri, Neehar},
-  journal={arXiv preprint arXiv:2505.20612},
+  journal={Advances in Neural Information Processing Systems},
   year={2025}
 }
 ```
