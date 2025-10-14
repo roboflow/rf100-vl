@@ -6,6 +6,11 @@ from PIL import Image
 from tqdm import tqdm
 import argparse
 import sys
+
+# Disable torch.compile to avoid device mismatch errors
+torch._dynamo.config.suppress_errors = True
+os.environ['TORCH_COMPILE_DISABLE'] = '1'
+
 sys.path.insert(0, '/root/sam3')
 
 from sam3 import build_sam3_image_model
@@ -156,17 +161,17 @@ def benchmark_dataset(dataset_path, output_dir, bpe_path, checkpoint_path,
 
 def main():
     parser = argparse.ArgumentParser(description="Benchmark SAM3 on RF100-VL datasets")
-    parser.add_argument("--rf100_dir", type=str, default="rf100-vl/rf100-vl",
+    parser.add_argument("--rf100_dir", type=str, default="/root/rf100-vl-data",
                         help="Path to RF100-VL datasets directory")
-    parser.add_argument("--output_dir", type=str, default="predictions/sam3",
+    parser.add_argument("--output_dir", type=str, default="/root/predictions/sam3",
                         help="Directory to save predictions")
-    parser.add_argument("--bpe_path", type=str, default="/root/sam3_weights/bpe_simple_vocab_16e6.txt.gz",
+    parser.add_argument("--bpe_path", type=str, default="/root/bpe_simple_vocab_16e6.txt.gz",
                         help="Path to BPE vocabulary file")
-    parser.add_argument("--checkpoint_path", type=str, default="/root/sam3_weights/weights.pt",
+    parser.add_argument("--checkpoint_path", type=str, default="/root/weights.pt",
                         help="Path to SAM3 checkpoint")
     parser.add_argument("--has_presence_token", action="store_true", default=True,
                         help="Whether the model has presence token")
-    parser.add_argument("--threshold", type=float, default=0.5,
+    parser.add_argument("--threshold", type=float, default=0.35,
                         help="Detection confidence threshold")
     parser.add_argument("--device", type=str, default="cuda",
                         choices=["cuda", "cpu"], help="Device to run inference on")
