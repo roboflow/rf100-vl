@@ -44,7 +44,7 @@ To download RF100-VL, first install the `rf100vl` pip package:
 pip install rf100vl
 ```
 
-RF100-VL is hosted on Roboflow Universe, the world's largest repository of annotated computer vision dataset. You will need a free Roboflow Universe API key to download the dataset. [Learn how to find your API key]()
+RF100-VL is hosted on Roboflow Universe, the world's largest repository of annotated computer vision dataset. You will need a free Roboflow Universe API key to download the dataset. [Learn how to find your API key](https://docs.roboflow.com/developer/authentication/find-your-roboflow-api-key)
 
 Export your API key into an environment variable called `ROBOFLOW_API_KEY`:
 
