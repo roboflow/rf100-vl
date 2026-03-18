@@ -23,7 +23,6 @@ class RF100VlDataset:
         return f"RF100VLDataset(name={self.name}, category={self.category})"
 
     def download(self, path: str, model_format: str = "coco", overwrite: bool = True):
-        os.makedirs(path, exist_ok=True)
         versions: List[Version] = self.rf_project.versions()
         latest_version: Version = max(versions, key=lambda v: v.id)
         dataset =latest_version.download(
