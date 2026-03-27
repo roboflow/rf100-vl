@@ -66,7 +66,7 @@ class RF100VlDataset:
 
         # confirm if category 0 is none
         if data_ann["categories"][0]["supercategory"] != "none":
-            return
+            return data_ann
 
         new_data_ann["categories"] = [
             {
