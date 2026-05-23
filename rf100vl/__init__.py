@@ -7,4 +7,6 @@ from rf100vl.roboflow100vl import (
     download_rf100vl,
     download_rf20vl_fsod,
     download_rf20vl_full,
+    get_rf100vl_dataset_by_index,
+    download_rf100vl_index,
 )
