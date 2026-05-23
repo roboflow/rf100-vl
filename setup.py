@@ -10,7 +10,7 @@ with open("README.md", "r", encoding="utf-8") as f:
 
 setup(
     name="rf100vl",
-    version="1.1.1",
+    version="1.1.2",
     description="RF100-VL Dataset Interface",
     author="Roboflow, Inc.",
     author_email="peter@roboflow.com",
