@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rf100vl"
+version = "1.1.2"
+description = "RF100-VL Dataset Interface"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { file = "LICENSE" }
+authors = [
+    { name = "Roboflow, Inc.", email = "peter@roboflow.com" },
+]
+keywords = ["machine-learning", "deep-learning", "computer-vision", "ML", "DL", "CV", "AI"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "roboflow",
+]
+
+[project.urls]
+Homepage = "https://github.com/roboflow/rf100-vl"
+Repository = "https://github.com/roboflow/rf100-vl"
+
+[tool.setuptools.packages.find]
+include = ["rf100vl*"]
+
+[tool.setuptools.package-data]
+rf100vl = ["assets/*.json"]
