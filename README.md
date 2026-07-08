@@ -29,7 +29,6 @@ Neehar Peri <sup>2</sup>
 </div>
 </div>
 
-
 Introduced in the paper "[Roboflow 100-VL: A Multi-Domain Object Detection Benchmark for Vision-Language Models](https://arxiv.org/pdf/2505.20612)", RF100-VL is a large-scale collection of 100 multi-modal datasets with diverse concepts not commonly found in VLM pre-training.
 
 The benchmark includes images, with corresponding annotations, from seven domains: flora and fauna, sport, industry, document processing, laboratory imaging, aerial imagery, and miscellaneous datasets related to various use cases for which detection models are commonly used.
@@ -54,16 +53,16 @@ export ROBOFLOW_API_KEY=YOUR_KEY
 
 Several helper functions are available to download RF100-VL and its subsets. These are split up into two categories: functions that retrieve Dataset objects with the name of each project and its category. (that start with `get_`), and data downloaders (that start with `download_`).
 
-| Data Loader Name               | Dataset Name           |
+| Data Loader Name | Dataset Name |
 |--------------------------------|------------------------|
-| `get_rf100vl_fsod_projects`      | RF100-VL-FSOD          |
-| `get_rf100vl_projects`           | RF100-VL               |
-| `get_rf20vl_fsod_projects`       | RF20-VL-FSOD           |
-| `get_rf20vl_full_projects`       | RF20-VL           |
-| `download_rf100vl_fsod`          | RF100-VL-FSOD          |
-| `download_rf100vl`               | RF100-VL               |
-| `download_rf20vl_fsod`           | RF20-VL-FSOD           |
-| `download_rf20vl_full`           | RF20-VL           |
+| `get_rf100vl_fsod_projects` | RF100-VL-FSOD |
+| `get_rf100vl_projects` | RF100-VL |
+| `get_rf20vl_fsod_projects` | RF20-VL-FSOD |
+| `get_rf20vl_full_projects` | RF20-VL |
+| `download_rf100vl_fsod` | RF100-VL-FSOD |
+| `download_rf100vl` | RF100-VL |
+| `download_rf20vl_fsod` | RF20-VL-FSOD |
+| `download_rf20vl_full` | RF20-VL |
 
 Each dataset object has its own `download` method.
 
@@ -76,6 +75,39 @@ download_rf100vl(path="./rf100-vl/")
 ```
 
 The datasets will be downloaded in COCO JSON format to a directory called `rf100-vl`. Every dataset will be in its own sub-folder.
+
+### CLI
+
+A command-line downloader is available via the optional `cli` extra:
+
+```
+pip install "rf100vl[cli]"
+```
+
+```
+rf100vl download rf100vl ./rf100-vl/
+```
+
+Flags:
+
+| Flag | Description |
+|------|-------------|
+| `dataset` | `rf100vl` or `rf20vl` (positional) |
+| `path` | download destination (positional) |
+| `--fsod` | use the few-shot object detection variant |
+| `--index N` | download only dataset index N in the variant (zero-based; 0 = first dataset), instead of all |
+| `--model_format` | annotation format, default `coco` |
+| `--overwrite` | overwrite existing files, default `True` |
+| `--api_key` | Roboflow API key, defaults to `ROBOFLOW_API_KEY` env var |
+
+Examples:
+
+```
+rf100vl download rf100vl ./data                 # RF100-VL, full
+rf100vl download rf100vl ./data --fsod           # RF100-VL-FSOD
+rf100vl download rf20vl ./data --fsod            # RF20-VL-FSOD
+rf100vl download rf100vl ./data --index 0        # first dataset by index
+```
 
 ## CVPR 2025 Workshop Challenge: Few-Shot Object Detection from Annotator Instructions
 
@@ -132,11 +164,11 @@ Submit a zip file with pickle files for each dataset. The name of each pickle fi
 ]
 ```
 
-We've provided a [sample submission](https://drive.google.com/file/d/1Pp8oAYMMnCxTzFa078NS3CuzdNlIEVzp/view) for your reference. Submissions should be uploaded to our [EvalAI server](https://eval.ai/web/challenges/challenge-page/2459/overview). 
+We've provided a [sample submission](https://drive.google.com/file/d/1Pp8oAYMMnCxTzFa078NS3CuzdNlIEVzp/view) for your reference. Submissions should be uploaded to our [EvalAI server](https://eval.ai/web/challenges/challenge-page/2459/overview).
 
 ### Official Baseline
 
-We pre-train Detic on ImageNet21-K, COCO Captions, and LVIS. We evaluate this pre-trained model zero-shot on the datasets in RF20-VL. 
+We pre-train Detic on ImageNet21-K, COCO Captions, and LVIS. We evaluate this pre-trained model zero-shot on the datasets in RF20-VL.
 
 Our baseline code is available [here](https://github.com/anishmadan23/foundational_fsod/tree/fsod_rf20vl?tab=readme-ov-file).
 
