@@ -22,9 +22,15 @@ dependencies = [
     "roboflow",
 ]
 
+[project.optional-dependencies]
+cli = ["fire"]
+
 [project.urls]
 Homepage = "https://github.com/roboflow/rf100-vl"
 Repository = "https://github.com/roboflow/rf100-vl"
+
+[project.scripts]
+rf100vl = "rf100vl.__main__:main"
 
 [tool.setuptools.packages.find]
 include = ["rf100vl*"]
