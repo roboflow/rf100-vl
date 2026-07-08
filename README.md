@@ -95,7 +95,7 @@ Flags:
 | `dataset` | `rf100vl` or `rf20vl` (positional) |
 | `path` | download destination (positional) |
 | `--fsod` | use the few-shot object detection variant |
-| `--index N` | download only the N-th dataset in the variant, instead of all |
+| `--index N` | download only dataset index N in the variant (zero-based; 0 = first dataset), instead of all |
 | `--model_format` | annotation format, default `coco` |
 | `--overwrite` | overwrite existing files, default `True` |
 | `--api_key` | Roboflow API key, defaults to `ROBOFLOW_API_KEY` env var |
@@ -106,7 +106,7 @@ Examples:
 rf100vl download rf100vl ./data                 # RF100-VL, full
 rf100vl download rf100vl ./data --fsod           # RF100-VL-FSOD
 rf100vl download rf20vl ./data --fsod            # RF20-VL-FSOD
-rf100vl download rf100vl ./data --index 3        # single dataset by index
+rf100vl download rf100vl ./data --index 0        # first dataset by index
 ```
 
 ## CVPR 2025 Workshop Challenge: Few-Shot Object Detection from Annotator Instructions

@@ -37,7 +37,7 @@ def download(
 
     dataset: "rf100vl" or "rf20vl"
     fsod: use the few-shot object detection variant
-    index: download only the i-th dataset in the variant, instead of all
+    index: download only the dataset at this zero-based index in the variant, instead of all
     """
     if dataset not in _FULL_DOWNLOADERS:
         raise ValueError(f"unknown dataset {dataset!r}; expected one of {sorted(_FULL_DOWNLOADERS)}")
