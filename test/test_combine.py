@@ -11,6 +11,7 @@ import shutil
 import pytest
 
 from rf100vl import combine as combine_mod
+from rf100vl import roboflow100vl
 from rf100vl.combine import CombineError, combine, find_valid_dataset_dirs
 from rf100vl.util import get_global_index
 
@@ -170,3 +171,60 @@ class TestCombineEndToEnd:
         os.makedirs(tmp_path / "totally-not-real")
         with pytest.raises(CombineError):
             combine(str(tmp_path), basenames=["totally-not-real"])
+
+
+class TestCombineDownloaded:
+    @requires_local_corpus
+    def test_thin_wrapper_over_combine(self, corpus_copy):
+        """combine_downloaded delegates to combine() with the same semantics."""
+        result = roboflow100vl.combine_downloaded(str(corpus_copy))
+
+        assert not os.path.exists(corpus_copy / "jellyfish")
+        assert len(result["train"]["images"]) > 0
+
+
+class _FakeDataset:
+    """Stands in for RF100VlDataset in download_and_combine wiring tests --
+    `.download()` copies from a local fixture instead of hitting the network.
+    """
+
+    def __init__(self, name, source_dir):
+        self.name = name
+        self._source_dir = source_dir
+
+    def download(self, path, model_format="coco", overwrite=True):
+        shutil.copytree(self._source_dir, path, dirs_exist_ok=True)
+
+
+class TestResolveDatasetsForCombine:
+    def test_requires_exactly_one_of_indices_or_names(self):
+        """Passing both or neither indices/names is a hard error, not an ambiguous default."""
+        with pytest.raises(ValueError):
+            roboflow100vl._resolve_datasets_for_combine(None, None, "rf100vl", None)
+
+    def test_unknown_variant_raises(self):
+        """An unsupported variant name fails loudly instead of silently no-oping."""
+        with pytest.raises(ValueError):
+            roboflow100vl._resolve_datasets_for_combine([0], None, "not-a-real-variant", None)
+
+
+class TestDownloadAndCombine:
+    @requires_local_corpus
+    def test_downloads_into_cache_and_combines_at_top_level(self, tmp_path, monkeypatch):
+        """Raw downloads land under path/.cache/<name>/ and survive (Flow A
+        always keeps originals); combined tree is written at path/ directly.
+        No real network call -- RF100VlDataset.download is faked to copy
+        from the local jellyfish/deeppcb fixtures.
+        """
+        fakes = [
+            _FakeDataset("jellyfish", os.path.join(_LOCAL_CORPUS, "jellyfish")),
+            _FakeDataset("deeppcb", os.path.join(_LOCAL_CORPUS, "deeppcb")),
+        ]
+        monkeypatch.setitem(roboflow100vl._PROJECT_FETCHERS, "rf100vl", lambda api_key=None: fakes)
+
+        result = roboflow100vl.download_and_combine(str(tmp_path), names=["jellyfish", "deeppcb"])
+
+        assert os.path.exists(tmp_path / ".cache" / "jellyfish" / "train" / "_annotations.coco.json")
+        assert os.path.exists(tmp_path / ".cache" / "deeppcb" / "train" / "_annotations.coco.json")
+        assert os.path.exists(tmp_path / "train" / "_annotations.coco.json")
+        assert len(result["train"]["images"]) > 0
