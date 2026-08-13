@@ -10,6 +10,7 @@ import shutil
 
 import pytest
 
+from rf100vl import __main__ as cli
 from rf100vl import combine as combine_mod
 from rf100vl import roboflow100vl
 from rf100vl.combine import CombineError, combine, find_valid_dataset_dirs
@@ -172,6 +173,14 @@ class TestCombineEndToEnd:
         with pytest.raises(CombineError):
             combine(str(tmp_path), basenames=["totally-not-real"])
 
+    def test_raises_on_explicit_basename_with_no_directory(self, tmp_path):
+        """A canonical basename with no matching directory under path must
+        raise, not silently return an empty result with no error -- an
+        earlier version of this code did exactly that.
+        """
+        with pytest.raises(CombineError):
+            combine(str(tmp_path), basenames=["bees"])
+
 
 class TestCombineDownloaded:
     @requires_local_corpus
@@ -228,3 +237,113 @@ class TestDownloadAndCombine:
         assert os.path.exists(tmp_path / ".cache" / "deeppcb" / "train" / "_annotations.coco.json")
         assert os.path.exists(tmp_path / "train" / "_annotations.coco.json")
         assert len(result["train"]["images"]) > 0
+
+
+class TestSplitCsvFlag:
+    """Fire hands back different Python types depending on the flag value's
+    shape, not always the raw string -- a bug (`'tuple' object has no
+    attribute 'split'`) shipped because tests called cli functions
+    directly with plain strings and never exercised this.
+    """
+
+    @pytest.mark.parametrize(
+        "value,expected",
+        [
+            pytest.param(None, None, id="none"),
+            pytest.param("0,15,29", ["0", "15", "29"], id="str-multi"),
+            pytest.param("5", ["5"], id="str-single"),
+            pytest.param((0, 15, 29), ["0", "15", "29"], id="fire-tuple-multi"),
+            pytest.param(5, ["5"], id="fire-bare-int-single"),
+        ],
+    )
+    def test_normalizes_every_shape_fire_can_produce(self, value, expected):
+        assert cli._split_csv_flag(value) == expected
+
+
+class TestCLICombine:
+    @requires_local_corpus
+    def test_names_resolve_and_combine(self, corpus_copy):
+        """`rf100vl combine --names` resolves directly to basenames."""
+        cli.combine(str(corpus_copy), names="jellyfish,deeppcb")
+
+        assert not os.path.exists(corpus_copy / "jellyfish")
+        assert os.path.exists(corpus_copy / "train" / "_annotations.coco.json")
+
+    @requires_local_corpus
+    def test_indices_resolve_to_basenames(self, corpus_copy):
+        """`rf100vl combine --indices` resolves global indices to basenames
+        via the same canonical list used by get_global_index."""
+        jelly_idx = get_global_index("jellyfish")
+        pcb_idx = get_global_index("deeppcb")
+
+        cli.combine(str(corpus_copy), indices=f"{jelly_idx},{pcb_idx}")
+
+        assert not os.path.exists(corpus_copy / "jellyfish")
+        assert not os.path.exists(corpus_copy / "deeppcb")
+
+    @requires_local_corpus
+    def test_indices_as_fire_parsed_tuple(self, corpus_copy):
+        """Regression test for the actual reported crash: Fire parses
+        `--indices 0,15,29` into a tuple of ints before combine() ever
+        sees it, not the comma-separated string `.split(",")` assumed.
+        """
+        jelly_idx = get_global_index("jellyfish")
+        pcb_idx = get_global_index("deeppcb")
+
+        cli.combine(str(corpus_copy), indices=(jelly_idx, pcb_idx))
+
+        assert not os.path.exists(corpus_copy / "jellyfish")
+        assert not os.path.exists(corpus_copy / "deeppcb")
+
+    def test_indices_and_names_mutually_exclusive(self, tmp_path):
+        """Passing both --indices and --names is a hard error."""
+        with pytest.raises(ValueError):
+            cli.combine(str(tmp_path), indices="0", names="bees")
+
+
+class TestCLIDownloadCombine:
+    def test_combine_requires_a_selection(self, tmp_path):
+        """--combine with no --index/--indices/--names is a hard error, not
+        an implicit "combine all 100 datasets"."""
+        with pytest.raises(ValueError):
+            cli.download("rf100vl", str(tmp_path), combine=True)
+
+    def test_combine_rejects_fsod(self, tmp_path):
+        """--combine + --fsod is unsupported for now, fails loudly."""
+        with pytest.raises(ValueError):
+            cli.download("rf100vl", str(tmp_path), fsod=True, combine=True, index=0)
+
+    def test_combine_indices_and_names_mutually_exclusive(self, tmp_path):
+        """Passing both --indices and --names with --combine is a hard error."""
+        with pytest.raises(ValueError):
+            cli.download("rf100vl", str(tmp_path), combine=True, indices="0", names="bees")
+
+    @requires_local_corpus
+    def test_combine_wires_through_to_download_and_combine(self, tmp_path, monkeypatch):
+        """`rf100vl download --combine --names=...` downloads (faked, no
+        network) into path/.cache/ and writes the combined tree at path/.
+        """
+        fakes = [
+            _FakeDataset("jellyfish", os.path.join(_LOCAL_CORPUS, "jellyfish")),
+            _FakeDataset("deeppcb", os.path.join(_LOCAL_CORPUS, "deeppcb")),
+        ]
+        monkeypatch.setitem(roboflow100vl._PROJECT_FETCHERS, "rf100vl", lambda api_key=None: fakes)
+
+        cli.download("rf100vl", str(tmp_path), combine=True, names="jellyfish,deeppcb")
+
+        assert os.path.exists(tmp_path / ".cache" / "jellyfish" / "train" / "_annotations.coco.json")
+        assert os.path.exists(tmp_path / "train" / "_annotations.coco.json")
+
+    @requires_local_corpus
+    def test_combine_indices_as_fire_parsed_tuple(self, tmp_path, monkeypatch):
+        """Same regression as TestCLICombine.test_indices_as_fire_parsed_tuple,
+        for the download --combine --indices path."""
+        fakes = [
+            _FakeDataset("jellyfish", os.path.join(_LOCAL_CORPUS, "jellyfish")),
+            _FakeDataset("deeppcb", os.path.join(_LOCAL_CORPUS, "deeppcb")),
+        ]
+        monkeypatch.setitem(roboflow100vl._PROJECT_FETCHERS, "rf100vl", lambda api_key=None: fakes)
+
+        cli.download("rf100vl", str(tmp_path), combine=True, indices=(0, 1))
+
+        assert os.path.exists(tmp_path / "train" / "_annotations.coco.json")

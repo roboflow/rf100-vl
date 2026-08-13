@@ -290,11 +290,15 @@ def combine(
 
         if entry is None:
             dataset_dir = os.path.join(path, basename)
+            if not os.path.isdir(dataset_dir):
+                raise CombineError(f"{basename}: no such directory {dataset_dir!r}")
             fragments = {}
             for split in SPLITS:
                 frag = _remap_split(dataset_dir, basename, split)
                 if frag is not None:
                     fragments[split] = frag
+            if not fragments:
+                raise CombineError(f"{basename}: no split has _annotations.coco.json under {dataset_dir!r}")
             entry = {"fragments": fragments, "materialized": False}
             datasets_cache[basename] = entry
             _save_manifest(out_path, manifest)
