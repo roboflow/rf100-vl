@@ -109,6 +109,68 @@ rf100vl download rf20vl ./data --fsod            # RF20-VL-FSOD
 rf100vl download rf100vl ./data --index 0        # first dataset by index
 ```
 
+## Combine Datasets
+
+Fold two or more RF100-VL sub-datasets into a single COCO dataset — one
+unified label space, one set of `train/valid/test` folders — instead of
+training against each dataset separately.
+
+Category labels are namespaced per source dataset (`dataset:label`, e.g.
+`deeppcb:open` vs `stomata-cells:open`) to avoid false-friend collisions
+between datasets that happen to use the same word for different concepts.
+Image filenames are prefixed with their source dataset (`bees_<file>.jpg`)
+so they never collide once combined.
+
+**Two ways to combine, matching two use cases:**
+
+1. **Download + combine in one step** — `download(..., combine=True)` /
+   `rf100vl download ... --combine`. Downloads the selected datasets into
+   `<path>/.cache/` (kept, reused on future calls with an overlapping
+   selection) and writes the combined dataset directly at
+   `<path>/{train,valid,test}`.
+2. **Combine datasets you already downloaded** — `combine_downloaded(...)`
+   / `rf100vl combine`. No network access; operates in place on a
+   directory that already contains per-dataset folders (e.g. from several
+   plain `download` calls). **Destructive by default**: each per-dataset
+   folder (`path/bees`, `path/deeppcb`, ...) is *moved* into the combined
+   tree and removed once empty, so no disk space is duplicated. Pass
+   `keep_originals=True` to copy instead and leave the source folders
+   intact. Interrupted runs are resumable — progress is tracked in
+   `path/.combine_manifest.json`, so re-running skips already-merged
+   datasets instead of redoing them.
+
+Python API:
+
+```python
+from rf100vl import download_and_combine, combine_downloaded
+
+# download 3 datasets by global index and combine them
+download_and_combine("./combined", indices=[0, 15, 29])
+
+# or combine datasets you already downloaded under ./data
+# (./data/bees, ./data/deeppcb, ... get folded into ./data/{train,valid,test})
+combine_downloaded("./data")
+```
+
+CLI:
+
+```
+rf100vl download rf100vl ./combined --combine --indices 0,15,29
+rf100vl combine ./data
+rf100vl combine ./data --names bees,deeppcb --keep-originals
+```
+
+| Flag (`combine`) | Description |
+|------|-------------|
+| `path` | directory of already-downloaded per-dataset folders to combine (positional) |
+| `--indices` | comma-separated global dataset indices to include, e.g. `0,3,7`; mutually exclusive with `--names` |
+| `--names` | comma-separated canonical dataset basenames to include, e.g. `bees,deeppcb`; mutually exclusive with `--indices` |
+| `--keep_originals` | copy instead of move — leaves source per-dataset folders untouched (default: `False`) |
+
+`download`'s `--combine` flag adds `--indices`/`--names` (same meaning as
+above) and requires one of `--index`, `--indices`, or `--names` to pick a
+finite selection; not yet supported together with `--fsod`.
+
 ## CVPR 2025 Workshop Challenge: Few-Shot Object Detection from Annotator Instructions
 
 **Organized by:** Anish Madan, Neehar Peri, Deva Ramanan
