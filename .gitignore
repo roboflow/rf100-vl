@@ -2,3 +2,7 @@
 build/
 dist/
 *.egg-info/
+rf100-vl/
+test/datasets/
+.cache/
+.combine_manifest.json
