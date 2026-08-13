@@ -27,6 +27,17 @@ _INDEX_VARIANTS = {
 }
 
 
+def _indices_to_basenames(indices: list) -> list:
+    basenames = []
+    n = len(_CANONICAL_BASENAMES)
+    for token in indices:
+        i = int(token)
+        if not 0 <= i < n:
+            raise ValueError(f"index {i} out of range (expected 0..{n - 1})")
+        basenames.append(_CANONICAL_BASENAMES[i])
+    return basenames
+
+
 def _split_csv_flag(value) -> Optional[list]:
     """Normalize a comma-separated CLI flag to a list of str tokens.
 
@@ -71,17 +82,19 @@ def download(
     if dataset not in _FULL_DOWNLOADERS:
         raise ValueError(f"unknown dataset {dataset!r}; expected one of {sorted(_FULL_DOWNLOADERS)}")
 
+    if not combine and (indices is not None or names is not None):
+        raise ValueError("--indices and --names are only valid with --combine")
+
     if combine:
         if fsod:
             raise ValueError("combine is not supported for the fsod variant yet")
-        if indices is not None and names is not None:
-            raise ValueError("pass at most one of --indices or --names")
         split_indices = _split_csv_flag(indices)
         parsed_indices = [int(i) for i in split_indices] if split_indices is not None else None
         parsed_names = _split_csv_flag(names)
-        if parsed_indices is None and parsed_names is None:
-            if index is None:
-                raise ValueError("combine requires one of --index, --indices, or --names")
+        selection_count = int(index is not None) + int(parsed_indices is not None) + int(parsed_names is not None)
+        if selection_count != 1:
+            raise ValueError("combine requires exactly one of --index, --indices, or --names")
+        if index is not None:
             parsed_indices = [index]
         variant = _INDEX_VARIANTS[(dataset, False)]
         download_and_combine(
@@ -143,7 +156,7 @@ def combine(
     basenames = None
     split_indices = _split_csv_flag(indices)
     if split_indices is not None:
-        basenames = [_CANONICAL_BASENAMES[int(i)] for i in split_indices]
+        basenames = _indices_to_basenames(split_indices)
     else:
         basenames = _split_csv_flag(names)
     combine_downloaded(path, basenames=basenames, keep_originals=keep_originals)

@@ -138,6 +138,8 @@ class TestCombineEndToEnd:
         moved_files = os.listdir(corpus_copy / "train" / "images")
         assert any(f.startswith("jellyfish_") for f in moved_files)
         assert any(f.startswith("deeppcb_") for f in moved_files)
+        assert isinstance(result["train"]["info"], dict)
+        assert "rf100vl_source_info" in result["train"]["info"]
 
     @requires_local_corpus
     def test_keep_originals_copies_instead_of_moves(self, corpus_copy):
@@ -181,6 +183,14 @@ class TestCombineEndToEnd:
         with pytest.raises(CombineError):
             combine(str(tmp_path), basenames=["bees"])
 
+    @requires_local_corpus
+    def test_out_path_is_created_before_manifest_write(self, corpus_copy):
+        out_path = corpus_copy / "combined"
+
+        combine(str(corpus_copy), basenames=["jellyfish"], out_path=str(out_path))
+
+        assert os.path.exists(out_path / ".combine_manifest.json")
+
 
 class TestCombineDownloaded:
     @requires_local_corpus
@@ -205,6 +215,16 @@ class _FakeDataset:
         shutil.copytree(self._source_dir, path, dirs_exist_ok=True)
 
 
+class _CountingFakeDataset(_FakeDataset):
+    def __init__(self, name, source_dir):
+        super().__init__(name, source_dir)
+        self.download_calls = 0
+
+    def download(self, path, model_format="coco", overwrite=True):
+        self.download_calls += 1
+        super().download(path, model_format=model_format, overwrite=overwrite)
+
+
 class TestResolveDatasetsForCombine:
     def test_requires_exactly_one_of_indices_or_names(self):
         """Passing both or neither indices/names is a hard error, not an ambiguous default."""
@@ -215,6 +235,12 @@ class TestResolveDatasetsForCombine:
         """An unsupported variant name fails loudly instead of silently no-oping."""
         with pytest.raises(ValueError):
             roboflow100vl._resolve_datasets_for_combine([0], None, "not-a-real-variant", None)
+
+    def test_indices_validate_non_negative(self, monkeypatch):
+        monkeypatch.setitem(roboflow100vl._PROJECT_FETCHERS, "rf100vl", lambda api_key=None: [_FakeDataset("bees", "")])
+
+        with pytest.raises(IndexError):
+            roboflow100vl._resolve_datasets_for_combine([-1], None, "rf100vl", None)
 
 
 class TestDownloadAndCombine:
@@ -237,6 +263,16 @@ class TestDownloadAndCombine:
         assert os.path.exists(tmp_path / ".cache" / "deeppcb" / "train" / "_annotations.coco.json")
         assert os.path.exists(tmp_path / "train" / "_annotations.coco.json")
         assert len(result["train"]["images"]) > 0
+
+    @requires_local_corpus
+    def test_reuses_materialized_entry_without_redownload(self, tmp_path, monkeypatch):
+        fake = _CountingFakeDataset("jellyfish", os.path.join(_LOCAL_CORPUS, "jellyfish"))
+        monkeypatch.setitem(roboflow100vl._PROJECT_FETCHERS, "rf100vl", lambda api_key=None: [fake])
+
+        roboflow100vl.download_and_combine(str(tmp_path), names=["jellyfish"], overwrite=False)
+        roboflow100vl.download_and_combine(str(tmp_path), names=["jellyfish"], overwrite=False)
+
+        assert fake.download_calls == 1
 
 
 class TestSplitCsvFlag:
@@ -300,6 +336,10 @@ class TestCLICombine:
         with pytest.raises(ValueError):
             cli.combine(str(tmp_path), indices="0", names="bees")
 
+    def test_negative_indices_are_rejected(self, tmp_path):
+        with pytest.raises(ValueError):
+            cli.combine(str(tmp_path), indices="-1")
+
 
 class TestCLIDownloadCombine:
     def test_combine_requires_a_selection(self, tmp_path):
@@ -317,6 +357,20 @@ class TestCLIDownloadCombine:
         """Passing both --indices and --names with --combine is a hard error."""
         with pytest.raises(ValueError):
             cli.download("rf100vl", str(tmp_path), combine=True, indices="0", names="bees")
+
+    def test_indices_require_combine(self, tmp_path):
+        with pytest.raises(ValueError):
+            cli.download("rf100vl", str(tmp_path), indices="0")
+
+    def test_names_require_combine(self, tmp_path):
+        with pytest.raises(ValueError):
+            cli.download("rf100vl", str(tmp_path), names="bees")
+
+    def test_combine_selection_is_strictly_mutually_exclusive(self, tmp_path):
+        with pytest.raises(ValueError):
+            cli.download("rf100vl", str(tmp_path), combine=True, index=0, indices="0")
+        with pytest.raises(ValueError):
+            cli.download("rf100vl", str(tmp_path), combine=True, index=0, names="bees")
 
     @requires_local_corpus
     def test_combine_wires_through_to_download_and_combine(self, tmp_path, monkeypatch):
