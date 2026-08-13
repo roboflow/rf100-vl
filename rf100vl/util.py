@@ -27,3 +27,12 @@ def get_category(dataset_name: str):
 
 def get_basename(dataset_name: str):
     return DATASET_TO_BASENAME_JSON[dataset_name]
+
+# Stable global rank per canonical basename (0..99), independent of selection
+# order, download state, or DatasetList's sort. Derived from `values` (already
+# the sorted canonical basename list above) rather than a new asset file, so
+# there is one source of truth for the 100-dataset name list.
+BASENAME_TO_GLOBAL_INDEX = {name: i for i, name in enumerate(values)}
+
+def get_global_index(basename: str) -> int:
+    return BASENAME_TO_GLOBAL_INDEX[basename]
