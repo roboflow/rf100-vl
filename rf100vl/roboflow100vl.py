@@ -18,9 +18,8 @@ def get_rf(api_key: Optional[str] = None):
 
 class DatasetList:
     def __init__(self, projects: List[Project]):
-        self.projects = projects
-        self.projects = sorted(self.projects, key=lambda p: p.name)
-        self.datasets = [RF100VlDataset(p) for p in projects]
+        self.projects = sorted(projects, key=lambda p: p.name)
+        self.datasets = [RF100VlDataset(p) for p in self.projects]
 
     def __iter__(self) -> Iterator[RF100VlDataset]:
         return iter(self.datasets)
