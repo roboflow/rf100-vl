@@ -1,4 +1,5 @@
 import os
+import json
 from typing import Dict, List, Optional, Iterator
 from rf100vl.dataset import RF100VlDataset
 from rf100vl.combine import combine as run_combine
@@ -197,12 +198,57 @@ def _resolve_datasets_for_combine(
         raise ValueError(f"unknown variant {variant!r}; expected one of {sorted(_PROJECT_FETCHERS)}")
     all_datasets = fetcher(api_key)
     if indices is not None:
+        n = len(all_datasets)
+        for i in indices:
+            if not 0 <= i < n:
+                raise IndexError(f"variant {variant!r} has {n} datasets; index {i} out of range")
         return [all_datasets[i] for i in indices]
     by_name = {d.name: d for d in all_datasets}
     missing = [n for n in names if n not in by_name]
     if missing:
         raise ValueError(f"unknown dataset name(s) for variant {variant!r}: {missing}")
     return [by_name[n] for n in names]
+
+
+def _load_combine_manifest(path: str) -> dict:
+    manifest_path = os.path.join(path, ".combine_manifest.json")
+    if not os.path.exists(manifest_path):
+        return {"datasets": {}}
+    with open(manifest_path) as f:
+        return json.load(f)
+
+
+def _save_combine_manifest(path: str, manifest: dict) -> None:
+    os.makedirs(path, exist_ok=True)
+    manifest_path = os.path.join(path, ".combine_manifest.json")
+    tmp_path = manifest_path + ".tmp"
+    with open(tmp_path, "w") as f:
+        json.dump(manifest, f)
+    os.replace(tmp_path, manifest_path)
+
+
+def _dataset_cache_complete(cache_dir: str, basename: str) -> bool:
+    dataset_dir = os.path.join(cache_dir, basename)
+    if not os.path.isdir(dataset_dir):
+        return False
+    return any(
+        os.path.exists(os.path.join(dataset_dir, split, "_annotations.coco.json"))
+        for split in ("train", "valid", "test")
+    )
+
+
+def _invalidate_materialized_dataset(path: str, manifest: dict, basename: str) -> None:
+    datasets_cache = manifest.get("datasets", {})
+    entry = datasets_cache.get(basename)
+    if not entry or not entry.get("materialized"):
+        return
+    for split, frag in entry.get("fragments", {}).items():
+        images_dir = os.path.join(path, split, "images")
+        for img in frag.get("images", []):
+            image_path = os.path.join(images_dir, img["file_name"])
+            if os.path.exists(image_path):
+                os.remove(image_path)
+    del datasets_cache[basename]
 
 
 def download_and_combine(
@@ -228,7 +274,24 @@ def download_and_combine(
     datasets = _resolve_datasets_for_combine(indices, names, variant, api_key)
     cache_dir = os.path.join(path, ".cache")
     os.makedirs(cache_dir, exist_ok=True)
+    manifest = _load_combine_manifest(path)
+    datasets_cache = manifest.get("datasets", {})
+    manifest_dirty = False
     for dataset in datasets:
-        dataset.download(os.path.join(cache_dir, dataset.name), model_format=model_format, overwrite=overwrite)
+        entry = datasets_cache.get(dataset.name)
+        materialized = bool(entry and entry.get("materialized"))
+        if overwrite and materialized:
+            _invalidate_materialized_dataset(path, manifest, dataset.name)
+            entry = None
+            materialized = False
+            manifest_dirty = True
+        cache_complete = _dataset_cache_complete(cache_dir, dataset.name)
+        should_download = overwrite or not cache_complete
+        if materialized and not overwrite:
+            should_download = False
+        if should_download:
+            dataset.download(os.path.join(cache_dir, dataset.name), model_format=model_format, overwrite=overwrite)
+    if manifest_dirty:
+        _save_combine_manifest(path, manifest)
     basenames = [dataset.name for dataset in datasets]
     return run_combine(cache_dir, basenames=basenames, out_path=path)

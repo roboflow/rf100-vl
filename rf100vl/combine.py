@@ -181,8 +181,13 @@ def _merge_split(
         if frag["info"]:
             infos.append(frag["info"])
 
+    info: dict = {}
+    if infos:
+        info = dict(infos[0]) if isinstance(infos[0], dict) else {}
+        info["rf100vl_source_info"] = infos
+
     return {
-        "info": infos,
+        "info": info,
         "licenses": deduped_licenses,
         "categories": categories,
         "images": images,
@@ -273,6 +278,7 @@ def combine(
     (Flow A) — implies `keep_originals` so the cache survives for reuse.
     """
     out_path = out_path or path
+    os.makedirs(out_path, exist_ok=True)
     selected = basenames if basenames is not None else find_valid_dataset_dirs(path)
     if not selected:
         raise CombineError(f"no valid rf100-vl dataset folders found under {path!r}")
