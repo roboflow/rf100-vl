@@ -1,4 +1,6 @@
 from rf100vl.roboflow100vl import (
+    combine_downloaded,
+    download_and_combine,
     download_rf100vl,
     download_rf100vl_fsod,
     download_rf100vl_index,
@@ -22,4 +24,6 @@ __all__ = [
     "download_rf20vl_fsod",
     "download_rf20vl_full",
     "download_rf100vl_index",
+    "combine_downloaded",
+    "download_and_combine",
 ]

@@ -1,6 +1,7 @@
 import os
-from typing import List, Optional, Iterator
+from typing import Dict, List, Optional, Iterator
 from rf100vl.dataset import RF100VlDataset
+from rf100vl.combine import combine as run_combine
 from roboflow import Project
 import roboflow
 
@@ -161,3 +162,73 @@ def download_rf100vl_index(
     dataset = get_rf100vl_dataset_by_index(index, variant=variant, api_key=api_key)
     dataset.download(path, model_format=model_format, overwrite=overwrite)
     return dataset
+
+
+# ---------------------------------------------------------------------------
+# Combine — fold per-dataset COCO folders into one dataset. See
+# rf100vl/combine.py for the actual remap/merge/move logic and
+# .plans/active/todo_combine-datasets.md for the design.
+# ---------------------------------------------------------------------------
+
+
+def combine_downloaded(path: str, basenames: Optional[List[str]] = None, keep_originals: bool = False) -> Dict[str, dict]:
+    """Fold per-dataset folders already downloaded under ``path`` into one
+    combined COCO dataset directly at ``path/{train,valid,test}`` — no
+    network access. Thin wrapper over ``rf100vl.combine.combine`` (Flow B,
+    in-place). Destructive by default: source folders are moved and
+    removed once empty; pass ``keep_originals=True`` to copy instead.
+
+    ``basenames``: which per-dataset folders to include; default is every
+    valid one found directly under ``path``.
+    """
+    return run_combine(path, basenames=basenames, keep_originals=keep_originals)
+
+
+def _resolve_datasets_for_combine(
+    indices: Optional[List[int]],
+    names: Optional[List[str]],
+    variant: str,
+    api_key: Optional[str],
+) -> List[RF100VlDataset]:
+    if (indices is None) == (names is None):
+        raise ValueError("pass exactly one of `indices` or `names`")
+    fetcher = _PROJECT_FETCHERS.get(variant)
+    if fetcher is None:
+        raise ValueError(f"unknown variant {variant!r}; expected one of {sorted(_PROJECT_FETCHERS)}")
+    all_datasets = fetcher(api_key)
+    if indices is not None:
+        return [all_datasets[i] for i in indices]
+    by_name = {d.name: d for d in all_datasets}
+    missing = [n for n in names if n not in by_name]
+    if missing:
+        raise ValueError(f"unknown dataset name(s) for variant {variant!r}: {missing}")
+    return [by_name[n] for n in names]
+
+
+def download_and_combine(
+    path: str,
+    indices: Optional[List[int]] = None,
+    names: Optional[List[str]] = None,
+    *,
+    variant: str = "rf100vl",
+    model_format: str = "coco",
+    overwrite: bool = True,
+    api_key: Optional[str] = None,
+) -> Dict[str, dict]:
+    """Download the selected dataset(s) and fold them into one combined COCO
+    tree directly at ``path/{train,valid,test}``. Raw per-dataset downloads
+    land under ``path/.cache/`` and are kept (not cleaned up) so a later
+    call with an overlapping selection can reuse them (Flow A).
+
+    Pass exactly one of ``indices`` (global indices into the sorted
+    variant) or ``names`` (canonical basenames).
+    """
+    if model_format != "coco":
+        raise ValueError(f"combine only supports model_format='coco', got {model_format!r}")
+    datasets = _resolve_datasets_for_combine(indices, names, variant, api_key)
+    cache_dir = os.path.join(path, ".cache")
+    os.makedirs(cache_dir, exist_ok=True)
+    for dataset in datasets:
+        dataset.download(os.path.join(cache_dir, dataset.name), model_format=model_format, overwrite=overwrite)
+    basenames = [dataset.name for dataset in datasets]
+    return run_combine(cache_dir, basenames=basenames, out_path=path)

@@ -206,16 +206,21 @@ def _save_manifest(path: str, manifest: dict) -> None:
     os.replace(tmp_path, manifest_path)
 
 
-def _materialize_dataset(path: str, basename: str, fragments: Dict[str, dict], keep_originals: bool) -> None:
-    """Move (or copy) one dataset's images into the combined tree.
-    Idempotent per-file — safe to re-run after a partial interruption:
-    a file already present at its destination is left alone, and a file
-    missing from both source and destination raises loudly instead of
-    silently producing a combined dataset with missing images.
+def _materialize_dataset(
+    path: str, out_path: str, basename: str, fragments: Dict[str, dict], keep_originals: bool
+) -> None:
+    """Move (or copy) one dataset's images from `path/<basename>` into the
+    combined tree at `out_path`. Idempotent per-file — safe to re-run after
+    a partial interruption: a file already present at its destination is
+    left alone, and a file missing from both source and destination raises
+    loudly instead of silently producing a combined dataset with missing
+    images. `keep_originals` implies copy — always true when `path !=
+    out_path` (Flow A: source lives under `.cache`, must survive for reuse).
     """
     dataset_dir = os.path.join(path, basename)
+    keep_originals = keep_originals or path != out_path
     for split, frag in fragments.items():
-        images_dir = os.path.join(path, split, "images")
+        images_dir = os.path.join(out_path, split, "images")
         os.makedirs(images_dir, exist_ok=True)
         for img in frag["images"]:
             src = os.path.join(dataset_dir, split, img["_source_file_name"])
@@ -250,14 +255,24 @@ def _materialize_dataset(path: str, basename: str, fragments: Dict[str, dict], k
             os.rmdir(dataset_dir)
 
 
-def combine(path: str, basenames: Optional[List[str]] = None, keep_originals: bool = False) -> Dict[str, dict]:
-    """Combine already-downloaded per-dataset folders under `path` into one
-    dataset directly at `path/{train,valid,test}`. Returns the combined
-    per-split COCO dicts (also written to disk).
+def combine(
+    path: str,
+    basenames: Optional[List[str]] = None,
+    keep_originals: bool = False,
+    out_path: Optional[str] = None,
+) -> Dict[str, dict]:
+    """Combine per-dataset folders found under `path` into one dataset at
+    `out_path/{train,valid,test}`. Returns the combined per-split COCO
+    dicts (also written to disk).
 
     `basenames`: which per-dataset folders to include; default is every
     valid one found directly under `path` (see `find_valid_dataset_dirs`).
+    `out_path`: defaults to `path` (Flow B: true in-place combine). Pass a
+    different `out_path` to read sources from one directory (e.g. a
+    `.cache/` of raw downloads) while writing the combined tree elsewhere
+    (Flow A) — implies `keep_originals` so the cache survives for reuse.
     """
+    out_path = out_path or path
     selected = basenames if basenames is not None else find_valid_dataset_dirs(path)
     if not selected:
         raise CombineError(f"no valid rf100-vl dataset folders found under {path!r}")
@@ -265,7 +280,7 @@ def combine(path: str, basenames: Optional[List[str]] = None, keep_originals: bo
     if invalid:
         raise CombineError(f"not canonical rf100-vl dataset names: {invalid}")
 
-    manifest = _load_manifest(path)
+    manifest = _load_manifest(out_path)
     datasets_cache = manifest.setdefault("datasets", {})
 
     for basename in selected:
@@ -282,11 +297,11 @@ def combine(path: str, basenames: Optional[List[str]] = None, keep_originals: bo
                     fragments[split] = frag
             entry = {"fragments": fragments, "materialized": False}
             datasets_cache[basename] = entry
-            _save_manifest(path, manifest)
+            _save_manifest(out_path, manifest)
 
-        _materialize_dataset(path, basename, entry["fragments"], keep_originals)
+        _materialize_dataset(path, out_path, basename, entry["fragments"], keep_originals)
         entry["materialized"] = True
-        _save_manifest(path, manifest)
+        _save_manifest(out_path, manifest)
 
     # Join over every materialized dataset in the manifest, not just
     # `selected` — a prior run's dataset may no longer exist as a directory
@@ -309,7 +324,7 @@ def combine(path: str, basenames: Optional[List[str]] = None, keep_originals: bo
             continue
         combined = _merge_split(split_fragments, category_map, license_remap, deduped_licenses)
         combined_by_split[split] = combined
-        out_dir = os.path.join(path, split)
+        out_dir = os.path.join(out_path, split)
         os.makedirs(out_dir, exist_ok=True)
         with open(os.path.join(out_dir, "_annotations.coco.json"), "w") as f:
             json.dump(combined, f)
