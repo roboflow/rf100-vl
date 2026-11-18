@@ -34,8 +34,10 @@ class RF100VlDataset:
         self._location = dataset.location
 
     @property
-    def is_fewshot(self) -> str:
-        return self.name.contains("fsod")
+    def is_fewshot(self) -> bool:
+        # `name` is the canonical basename, which drops the "fsod" part of the
+        # Roboflow project name, so check that name instead
+        return "fsod" in self.rf_project.name.split("-")
 
     @property
     def location(self) -> Optional[str]:
